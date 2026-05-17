@@ -5,13 +5,14 @@
     xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground">
+    android:background="#0B131F">
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:indeterminateTint="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,10 +48,8 @@
             android:id="@+id/tvErrorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alignment="center"
             android:gravity="center"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="?attr/colorError"
+            android:textColor="#A0B2CD"
             android:textSize="16sp"
             tools:text="Não foi possível carregar os filmes." />
 
@@ -62,7 +61,7 @@
             android:layout_marginTop="16dp"
             android:text="Tentar Novamente"
             android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="#FFC107" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
