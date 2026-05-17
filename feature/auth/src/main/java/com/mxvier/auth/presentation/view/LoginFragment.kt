@@ -4,12 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.mxvier.auth.databinding.FragmentLoginBinding
+import com.mxvier.auth.presentation.viewmodel.LoginUiState
 import com.mxvier.auth.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -32,6 +39,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLoginButton()
+        observeUiState()
     }
 
     private fun setupLoginButton() {
@@ -59,6 +67,38 @@ class LoginFragment : Fragment() {
             if (hasError) return@setOnClickListener
             viewModel.login(user, password)
         }
+    }
+
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.loginState.collect { state ->
+                        handleUiState(state)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleUiState(state: LoginUiState) {
+        when (state) {
+            is LoginUiState.Initial -> toggleLoading(isLoading = false)
+            is LoginUiState.Loading -> toggleLoading(isLoading = true)
+            is LoginUiState.Success -> {
+                toggleLoading(isLoading = false)
+                Toast.makeText(requireContext(), "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+            }
+            is LoginUiState.Error -> {
+                toggleLoading(isLoading = false)
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun toggleLoading(isLoading: Boolean) {
+        binding.progressLoading.isVisible = isLoading
+        binding.containerForm.isVisible = !isLoading
     }
 
     override fun onDestroyView() {

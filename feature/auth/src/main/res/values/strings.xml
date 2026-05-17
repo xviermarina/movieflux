@@ -3,4 +3,5 @@
     <string name="login_fragment_first_input_hint">Usuário</string>
     <string name="login_fragment_second_input_hint">Senha</string>
     <string name="login_fragment_title">MovieFlux</string>
+    <string name="login_fragment_switch_label">Lembrar meus dados</string>
 </resources>

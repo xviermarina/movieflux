@@ -60,7 +60,7 @@
             android:id="@+id/til_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:hint="@string/login_fragment_second_input_hint"
             android:textColorHint="#A0B2CD"
             app:hintTextColor="#FFC107"
@@ -81,6 +81,17 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchRememberMe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/login_fragment_switch_label"
+            android:textColor="#A0B2CD"
+            android:textSize="14sp"
+            app:thumbTint="#FFC107"
+            app:trackTint="#152238" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
@@ -100,10 +111,10 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:indeterminateTint="#FFC107"
-        app:layout_constraintBottom_toBottomOf="@id/container_form"
-        app:layout_constraintEnd_toEndOf="@id/container_form"
-        app:layout_constraintStart_toStartOf="@id/container_form"
-        app:layout_constraintTop_toTopOf="@id/container_form"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
