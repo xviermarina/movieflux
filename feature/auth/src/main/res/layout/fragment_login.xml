@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="MovieFlux"
+        android:text="@string/login_fragment_title"
         android:textSize="36sp"
         android:textStyle="bold"
         android:textColor="#FFC107"
@@ -34,25 +34,24 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_email"
+            android:id="@+id/til_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Usuário"
+            android:hint="@string/login_fragment_first_input_hint"
             android:textColorHint="#A0B2CD"
             app:hintTextColor="#FFC107"
             app:boxStrokeColor="#FFC107"
             app:boxBackgroundColor="#152238"
             app:boxBackgroundMode="filled"
-            app:startIconDrawable="@android:drawable/ic_dialog_email"
             app:startIconTint="#A0B2CD">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_email"
+                android:id="@+id/et_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
                 android:textColor="#FFFFFF"
+                android:inputType="text"
                 android:textColorHint="#A0B2CD"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:hint="Senha"
+            android:hint="@string/login_fragment_second_input_hint"
             android:textColorHint="#A0B2CD"
             app:hintTextColor="#FFC107"
             app:boxStrokeColor="#FFC107"
@@ -70,7 +69,6 @@
             app:boxBackgroundMode="filled"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="#A0B2CD"
-            app:startIconDrawable="@android:drawable/ic_lock_lock"
             app:startIconTint="#A0B2CD">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -87,7 +85,7 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Entrar"
+            android:text="@string/login_fragment_button_label"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#0B131F"
