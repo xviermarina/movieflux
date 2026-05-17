@@ -26,3 +26,4 @@ rootProject.name = "MovieFlux"
 include(":app")
 include(":core")
 include(":feature:auth")
+include(":feature:movies")
