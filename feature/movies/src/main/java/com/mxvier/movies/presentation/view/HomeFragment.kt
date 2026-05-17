@@ -1,60 +1,89 @@
 package com.mxvier.movies.presentation.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mxvier.movies.R
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.mxvier.movies.databinding.FragmentHomeBinding
+import com.mxvier.movies.presentation.viewmodel.HomeUiState
+import com.mxvier.movies.presentation.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding ?: throw IllegalStateException("Binding acessado fora do ciclo de vida da View")
+
+    private val viewModel: HomeViewModel by viewModels()
+    private val movieAdapter by lazy { HomeMovieAdapter() }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return _binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+        setupListeners()
+        observeUiState()
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvMovies.adapter = movieAdapter
+    }
+
+    private fun setupListeners() {
+        binding.btnRetry.setOnClickListener {
+            viewModel.fetchMovies()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    handleUiState(state)
                 }
             }
+        }
+    }
+
+    private fun handleUiState(state: HomeUiState) {
+        when (state) {
+            is HomeUiState.Loading -> {
+                binding.progressBar.isVisible = true
+                binding.rvMovies.isVisible = false
+                binding.layoutError.isVisible = false
+            }
+            is HomeUiState.Success -> {
+                binding.progressBar.isVisible = false
+                binding.rvMovies.isVisible = true
+                binding.layoutError.isVisible = false
+                movieAdapter.submitList(state.movies)
+            }
+            is HomeUiState.Error -> {
+                binding.progressBar.isVisible = false
+                binding.rvMovies.isVisible = false
+                binding.layoutError.isVisible = true
+                binding.tvErrorMessage.text = state.message
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

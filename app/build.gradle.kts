@@ -40,6 +40,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:movies"))
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

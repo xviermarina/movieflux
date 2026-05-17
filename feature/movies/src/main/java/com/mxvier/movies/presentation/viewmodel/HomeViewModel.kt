@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
         fetchMovies()
     }
 
-    private fun fetchMovies() {
+    internal fun fetchMovies() {
         viewModelScope.launch(ioDispatcher) {
             _uiState.value = HomeUiState.Loading
 
