@@ -23,6 +23,9 @@ import com.mxvier.auth.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavOptions
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -136,7 +139,20 @@ class LoginFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-        Toast.makeText(context,"Navegar pra home", Toast.LENGTH_SHORT).show()
+        val deepLinkUri = "app://movies/home".toUri()
+        val navController = findNavController()
+
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(navController.currentDestination?.id ?: return, true)
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .build()
+
+        try {
+            navController.navigate(deepLinkUri, navOptions)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Erro ao navegar para a Home", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun observeUiState() {

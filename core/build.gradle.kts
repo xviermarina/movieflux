@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.hilt.android)
@@ -14,7 +16,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "TMDB_API_KEY", "\"YOUR_API_KEY_HERE\"")
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { stream ->
+                localProperties.load(stream)
+            }
+        }
+
+        val apiKey = localProperties.getProperty("tmdb.api.key") ?: "\"\""
+        buildConfigField("String", "TMDB_API_KEY",apiKey)
     }
 
     compileOptions {

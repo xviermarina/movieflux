@@ -10,4 +10,6 @@
         android:name="com.mxvier.auth.presentation.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+
+    <include app:graph="@navigation/nav_graph_movies" />
 </navigation>
