@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.mxvier.movies.databinding.FragmentHomeBinding
 import com.mxvier.movies.presentation.viewmodel.HomeUiState
 import com.mxvier.movies.presentation.viewmodel.HomeViewModel
@@ -41,7 +42,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        val gridLayoutManager = binding.rvMovies.layoutManager as GridLayoutManager
+
         binding.rvMovies.adapter = movieAdapter
+        binding.rvMovies.addOnScrollListener(
+            EndlessScrollListener(gridLayoutManager) {
+                viewModel.fetchMovies()
+            }
+        )
     }
 
     private fun setupListeners() {

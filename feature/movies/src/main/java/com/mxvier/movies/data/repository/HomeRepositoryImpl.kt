@@ -7,8 +7,8 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val moviesService: MoviesService,
 ): HomeRepository {
-    override suspend fun fetchPopularMovies(): List<MovieResponse> {
-        return moviesService.getPopularMovies().results
+    override suspend fun fetchPopularMovies(page: Int): List<MovieResponse> {
+        return moviesService.getPopularMovies(page).results
     }
 
 }
