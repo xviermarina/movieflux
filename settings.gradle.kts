@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MovieFlux"
 include(":app")
+include(":core")
