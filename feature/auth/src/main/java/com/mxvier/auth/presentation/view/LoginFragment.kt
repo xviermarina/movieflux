@@ -117,7 +117,7 @@ class LoginFragment : Fragment() {
         if (isBiometricAvailable && !alreadyConfigured) {
             MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.MaterialAlertDialog_Material3)
                 .setTitle("Login Biométrico")
-                .setMessage("Deseja ativar o acesso por biometria para os próximos logins?")
+                .setMessage("Deseja ativar o acesso por biometria para o próximo login?")
                 .setPositiveButton("Sim, ativar") { dialog, _ ->
                     viewModel.enableBiometricOption(true)
                     navigateToHome()
