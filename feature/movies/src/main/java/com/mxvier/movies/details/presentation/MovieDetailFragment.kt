@@ -78,20 +78,22 @@ class MovieDetailFragment : Fragment() {
 
     private fun handleUiState(state: MovieDetailUiState) {
         binding.progressDetail.isVisible = state is MovieDetailUiState.Loading
-        binding.scrollContainer.isVisible = state is MovieDetailUiState.Success
+        binding.containerDetail.isVisible = state is MovieDetailUiState.Success
         binding.layoutErrorDetail.isVisible = state is MovieDetailUiState.Error
-
-        if (state is MovieDetailUiState.Loading) {
-            binding.tvDetailToolbarTitle.text = "Detalhes"
-        }
 
         if (state is MovieDetailUiState.Success) {
             val movie = state.movie
 
-            binding.tvDetailToolbarTitle.text = movie.title
+            binding.tvDetailToolbarTitle.text = "Detalhes"
             binding.tvMovieTitle.text = movie.title
             binding.tvVoteAverage.text = String.format("★ %.1f", movie.voteAverage)
             binding.tvOverview.text = movie.overview
+
+            val genreNames = movie.genres?.joinToString(", ") { it.name }
+            binding.tvMovieGenres.apply {
+                text = genreNames
+                isVisible = !genreNames.isNullOrEmpty()
+            }
 
             val imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}"
             Glide.with(this)
