@@ -2,9 +2,9 @@ package com.mxvier.movies.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mxvier.movies.data.repository.HomeRepository
 import com.mxvier.core.di.IoDispatcher
 import com.mxvier.movies.data.remote.response.MovieResponse
+import com.mxvier.movies.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
-    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    
+
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
@@ -27,43 +27,59 @@ class HomeViewModel @Inject constructor(
     private var isPageLoading = false
     private var isLastPage = false
 
-    
     init {
         fetchMovies()
     }
 
-    internal fun fetchMovies() {
+    fun fetchMovies() {
         if (isPageLoading || isLastPage) return
 
         isPageLoading = true
 
-        if (currentPage == 1){
+        if (currentPage == 1) {
             _uiState.value = HomeUiState.Loading
+        } else {
+            _uiState.value = HomeUiState.Success(
+                movies = accumulatedMovies.toList(),
+                isPagingLoading = true
+            )
         }
 
-        viewModelScope.launch(ioDispatcher) {
-            _uiState.value = HomeUiState.Loading
-
+        viewModelScope.launch(dispatcher) {
             try {
                 val newMovies = repository.fetchPopularMovies(currentPage)
-                if (newMovies.isEmpty()){
+
+                if (newMovies.isEmpty()) {
                     isLastPage = true
-                    if (currentPage == 1){
+                    if (currentPage == 1) {
                         _uiState.value = HomeUiState.Error("Nenhum filme encontrado.")
+                    } else {
+                        _uiState.value = HomeUiState.Success(
+                            movies = accumulatedMovies.toList(),
+                            isPagingLoading = false
+                        )
                     }
                 } else {
                     accumulatedMovies.addAll(newMovies)
-                    _uiState.value = HomeUiState.Success(accumulatedMovies.toList())
+                    _uiState.value = HomeUiState.Success(
+                        movies = accumulatedMovies.toList(),
+                        isPagingLoading = false
+                    )
                     currentPage++
                 }
             } catch (e: Exception) {
+                val errorMessage = e.localizedMessage ?: "Ocorreu um erro."
                 if (currentPage == 1) {
-                    _uiState.value = HomeUiState.Error(e.message ?: "Erro desconhecido")
+                    _uiState.value = HomeUiState.Error(errorMessage)
+                } else {
+                    _uiState.value = HomeUiState.Error(
+                        message = errorMessage,
+                        accumulatedMovies = accumulatedMovies.toList()
+                    )
                 }
-            }
-                finally {
-                    isPageLoading = false
-                }
+            } finally {
+                isPageLoading = false
             }
         }
+    }
 }

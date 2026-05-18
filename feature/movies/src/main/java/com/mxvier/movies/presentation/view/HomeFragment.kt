@@ -72,20 +72,31 @@ class HomeFragment : Fragment() {
         when (state) {
             is HomeUiState.Loading -> {
                 binding.progressBar.isVisible = true
+                binding.progressPaging.isVisible = false
                 binding.rvMovies.isVisible = false
                 binding.layoutError.isVisible = false
             }
             is HomeUiState.Success -> {
                 binding.progressBar.isVisible = false
+                binding.progressPaging.isVisible = state.isPagingLoading
                 binding.rvMovies.isVisible = true
                 binding.layoutError.isVisible = false
+
                 movieAdapter.submitList(state.movies)
             }
             is HomeUiState.Error -> {
                 binding.progressBar.isVisible = false
-                binding.rvMovies.isVisible = false
-                binding.layoutError.isVisible = true
-                binding.tvErrorMessage.text = state.message
+                binding.progressPaging.isVisible = false
+
+                val hasCachedMovies = state.accumulatedMovies.isNotEmpty()
+                binding.rvMovies.isVisible = hasCachedMovies
+                binding.layoutError.isVisible = !hasCachedMovies
+
+                if (hasCachedMovies) {
+                    movieAdapter.submitList(state.accumulatedMovies)
+                } else {
+                    binding.tvErrorMessage.text = state.message
+                }
             }
         }
     }
