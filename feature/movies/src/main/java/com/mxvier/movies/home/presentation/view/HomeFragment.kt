@@ -1,4 +1,4 @@
-package com.mxvier.movies.presentation.view
+package com.mxvier.movies.home.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mxvier.movies.R
 import com.mxvier.movies.databinding.FragmentHomeBinding
-import com.mxvier.movies.home.presentation.view.EndlessScrollListener
-import com.mxvier.movies.home.presentation.view.HomeMovieAdapter
 import com.mxvier.movies.presentation.viewmodel.HomeUiState
 import com.mxvier.movies.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
