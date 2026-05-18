@@ -1,6 +1,6 @@
-package com.mxvier.movies.data.remote
+package com.mxvier.movies.home.data.remote
 
-import com.mxvier.movies.data.remote.response.TMDBHomeResponse
+import com.mxvier.movies.home.data.remote.response.TMDBHomeResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

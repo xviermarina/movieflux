@@ -1,4 +1,8 @@
 <resources>
     <string name="home_toolbar_label">MovieFlux</string>
     <string name="home_retry_label">Tentar Novamente</string>
+    <string name="detail_fragment_button_label">Tentar Novamente</string>
+    <string name="detail_fragment_overview_label">Sinopse</string>
+    <string name="detail_fragment_toolbar_label">Detalhes</string>
+    <string name="error_navigating_to_details">Erro ao abrir detalhes do filme</string>
 </resources>

@@ -1,6 +1,6 @@
-package com.mxvier.movies.presentation.viewmodel
+package com.mxvier.movies.home.presentation.viewmodel
 
-import com.mxvier.movies.data.remote.response.MovieResponse
+import com.mxvier.movies.home.data.remote.response.MovieResponse
 
 sealed interface HomeUiState {
     object Loading : HomeUiState

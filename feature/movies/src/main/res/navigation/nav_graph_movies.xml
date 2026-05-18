@@ -14,4 +14,15 @@
         <deepLink app:uri="app://movies/home" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.mxvier.movies.details.presentation.MovieDetailFragment"
+        android:label="MovieDetailFragment"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+        <deepLink app:uri="app://movies/detail/{movieId}" />
+    </fragment>
 </navigation>

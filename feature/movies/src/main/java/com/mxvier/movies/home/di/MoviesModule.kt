@@ -1,7 +1,7 @@
 package com.mxvier.movies.di
 
-import com.mxvier.movies.data.remote.MoviesService
-import com.mxvier.movies.data.repository.HomeRepository
+import com.mxvier.movies.home.data.remote.MoviesService
+import com.mxvier.movies.home.data.repository.HomeRepository
 import com.mxvier.movies.data.repository.HomeRepositoryImpl
 import dagger.Binds
 import dagger.Module

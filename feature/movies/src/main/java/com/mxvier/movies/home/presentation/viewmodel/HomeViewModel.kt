@@ -1,10 +1,10 @@
-package com.mxvier.movies.presentation.viewmodel
+package com.mxvier.movies.home.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mxvier.core.di.IoDispatcher
-import com.mxvier.movies.data.remote.response.MovieResponse
-import com.mxvier.movies.data.repository.HomeRepository
+import com.mxvier.movies.home.data.remote.response.MovieResponse
+import com.mxvier.movies.home.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

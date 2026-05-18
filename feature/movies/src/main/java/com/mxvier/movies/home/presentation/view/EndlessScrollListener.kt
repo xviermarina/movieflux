@@ -1,4 +1,4 @@
-package com.mxvier.movies.presentation.view
+package com.mxvier.movies.home.presentation.view
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
