@@ -20,8 +20,8 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Initial)
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private val _savedCredentials = MutableStateFlow<Pair<String, String>?>(null)
-    val savedCredentials: StateFlow<Pair<String, String>?> = _savedCredentials.asStateFlow()
+    private val _savedUser = MutableStateFlow<String?>(null)
+    val savedUser: StateFlow<String?> = _savedUser.asStateFlow()
 
     private val _isBiometricEnabled = MutableStateFlow(false)
     val isBiometricEnabled: StateFlow<Boolean> = _isBiometricEnabled.asStateFlow()
@@ -34,9 +34,8 @@ class LoginViewModel @Inject constructor(
 
         if (rememberMe) {
             val user = sharedPreferences.getString("saved_user", "") ?: ""
-            val pass = sharedPreferences.getString("saved_pass", "") ?: ""
-            if (user.isNotEmpty() && pass.isNotEmpty()) {
-                _savedCredentials.value = Pair(user, pass)
+            if (user.isNotEmpty()) {
+                _savedUser.value = user
             }
         }
     }

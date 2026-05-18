@@ -1,4 +1,4 @@
-package com.mxvier.movies.data.remote.response
+package com.mxvier.movies.home.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

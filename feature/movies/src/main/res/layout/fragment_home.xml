@@ -43,7 +43,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovies"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="8dp"
@@ -51,18 +51,20 @@
         app:spanCount="2"
         app:layout_constraintTop_toBottomOf="@id/toolbarHome"
         app:layout_constraintBottom_toTopOf="@id/progressPaging"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_movie" />
 
     <ProgressBar
         android:id="@+id/progressPaging"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:padding="8dp"
         android:visibility="gone"
         android:indeterminateTint="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
     <LinearLayout
