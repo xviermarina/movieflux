@@ -1,8 +1,7 @@
-package com.mxvier.movies.data.repository
+package com.mxvier.movies.home.data.repository
 
 import com.mxvier.movies.home.data.remote.MoviesService
 import com.mxvier.movies.home.data.remote.response.MovieResponse
-import com.mxvier.movies.home.data.repository.HomeRepository
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(

@@ -164,11 +164,9 @@ class LoginFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.savedCredentials.collect { credentials ->
-                        if (credentials != null) {
-                            val (user, pass) = credentials
-                            binding.etUser.setText(user)
-                            binding.etPassword.setText(pass)
+                    viewModel.savedUser.collect { savedUser ->
+                        if (savedUser != null) {
+                            binding.etUser.setText(savedUser)
                             binding.switchRememberMe.isChecked = true
                         } else {
                             binding.switchRememberMe.isChecked = false

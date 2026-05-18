@@ -1,4 +1,4 @@
-package com.mxvier.movies.home.presentation.viewmodel
+package com.mxvier.movies.presentation.viewmodel
 
 import com.mxvier.movies.home.data.remote.response.MovieResponse
 

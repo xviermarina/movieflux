@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.mxvier.movies.home.data.remote.response.MovieResponse
 import com.mxvier.movies.databinding.ItemMovieBinding
+import com.mxvier.movies.home.data.remote.response.MovieResponse
 
 class HomeMovieAdapter(
     private val onMovieClick: (movieId: Int) -> Unit
@@ -42,6 +42,8 @@ class HomeMovieAdapter(
             Glide.with(binding.root.context)
                 .load(imageUrl)
                 .centerCrop()
+                .placeholder(android.R.drawable.progress_horizontal)
+                .error(android.R.drawable.ic_menu_gallery)
                 .into(binding.ivMoviePoster)
         }
     }

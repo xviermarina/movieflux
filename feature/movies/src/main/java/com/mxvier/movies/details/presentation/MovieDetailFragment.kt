@@ -1,5 +1,6 @@
 package com.mxvier.movies.details.presentation
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -95,6 +96,8 @@ class MovieDetailFragment : Fragment() {
             val imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}"
             Glide.with(this)
                 .load(imageUrl)
+                .placeholder(R.drawable.progress_horizontal)
+                .error(R.drawable.ic_menu_gallery)
                 .into(binding.ivMoviePoster)
         }
 
