@@ -1,4 +1,4 @@
-package com.mxvier.movies.presentation.viewmodel
+package com.mxvier.movies.home.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

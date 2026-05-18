@@ -16,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mxvier.movies.R
 import com.mxvier.movies.databinding.FragmentHomeBinding
-import com.mxvier.movies.presentation.viewmodel.HomeUiState
-import com.mxvier.movies.presentation.viewmodel.HomeViewModel
+import com.mxvier.movies.home.presentation.viewmodel.HomeUiState
+import com.mxvier.movies.home.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
