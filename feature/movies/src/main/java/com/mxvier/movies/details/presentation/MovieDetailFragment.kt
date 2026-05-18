@@ -1,8 +1,12 @@
 package com.mxvier.movies.details.presentation
 
 import android.R
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,6 +19,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mxvier.movies.databinding.FragmentMovieDetailBinding
+import com.mxvier.movies.details.data.remote.response.MovieDetailResponse
 import com.mxvier.movies.details.presentation.viewmodel.MovieDetailUiState
 import com.mxvier.movies.details.presentation.viewmodel.MovieDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,7 +89,7 @@ class MovieDetailFragment : Fragment() {
         if (state is MovieDetailUiState.Success) {
             val movie = state.movie
 
-            binding.tvDetailToolbarTitle.text = "Detalhes"
+            binding.tvDetailToolbarTitle.text = "Detalhes do filme"
             binding.tvMovieTitle.text = movie.title
             binding.tvVoteAverage.text = String.format("★ %.1f", movie.voteAverage)
             binding.tvOverview.text = movie.overview
@@ -101,12 +106,56 @@ class MovieDetailFragment : Fragment() {
                 .placeholder(R.drawable.progress_horizontal)
                 .error(R.drawable.ic_menu_gallery)
                 .into(binding.ivMoviePoster)
+
+            setupShareButton(movie)
         }
 
         if (state is MovieDetailUiState.Error) {
             binding.tvErrorDetailMessage.text = state.message
             binding.tvDetailToolbarTitle.text = "Erro"
+            binding.toolbarDetail.menu.clear()
         }
+    }
+
+    private fun setupShareButton(movie: MovieDetailResponse) {
+        val toolbar = binding.toolbarDetail
+        toolbar.menu.clear()
+
+        val shareItem = toolbar.menu.add(0, 1, 0, "Compartilhar")
+        shareItem.setIcon(R.drawable.ic_menu_share)
+        shareItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        shareItem.iconTintList = ColorStateList.valueOf(Color.parseColor("#FFC107"))
+
+        toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == 1) {
+                shareMovie(movie.title, movie.overview, movieId)
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun shareMovie(title: String, overview: String, movieId: Int) {
+        val movieUrl = "https://www.themoviedb.org/movie/$movieId"
+        val shareText = """
+        🎬 *$title*
+        
+        📝 $overview
+        
+        🔗 Veja mais em: $movieUrl
+        
+        Enviado via MovieFlux
+    """.trimIndent()
+
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "Compartilhar filme via")
+        startActivity(shareIntent)
     }
 
     override fun onDestroyView() {

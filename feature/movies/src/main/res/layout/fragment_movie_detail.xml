@@ -2,167 +2,180 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#0B131F"> <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/containerDetail"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:background="#0B131F"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarDetail"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#0B131F" app:navigationIcon="?attr/homeAsUpIndicator"
-        app:navigationIconTint="#FFC107" app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvDetailToolbarTitle"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarDetail"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#0B131F"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="#FFC107"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvDetailToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFC107"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                tools:text="Nome do Filme" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupSuccessContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFC107" android:textSize="22sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.1"
-            tools:text="Nome do Filme" />
+            android:visibility="visible"
+            app:constraint_referenced_ids="ivMoviePoster,tvMovieTitle,tvVoteAverage,tvMovieGenres,tvOverviewLabel,tvOverview" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupSuccessContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="ivMoviePoster,tvMovieTitle,tvVoteAverage,tvMovieGenres,tvOverviewLabel,tvOverview" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivMoviePoster"
-        android:layout_width="120dp"
-        android:layout_height="180dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-        app:layout_constraintTop_toBottomOf="@id/toolbarDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@android:drawable/ic_menu_gallery" />
-
-    <TextView
-        android:id="@+id/tvMovieTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="#F8FAFC" android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/ivMoviePoster"
-        app:layout_constraintStart_toEndOf="@id/ivMoviePoster"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Homem de Ferro" />
-
-    <TextView
-        android:id="@+id/tvVoteAverage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#FFC107" android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvMovieTitle"
-        app:layout_constraintStart_toStartOf="@id/tvMovieTitle"
-        app:layout_constraintEnd_toEndOf="@id/tvMovieTitle"
-        tools:text="★ 8.5" />
-
-    <TextView
-        android:id="@+id/tvMovieGenres"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#A0B2CD" android:textSize="14sp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/tvVoteAverage"
-        app:layout_constraintStart_toStartOf="@id/tvMovieTitle"
-        app:layout_constraintEnd_toEndOf="@id/tvMovieTitle"
-        tools:text="Ação, Aventura, Ficção Científica"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/tvOverviewLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="Sinopse"
-        android:textColor="#A0B2CD" android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/ivMoviePoster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tvOverview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="#CBD5E1"
-        android:textSize="15sp"
-        android:lineSpacingMultiplier="1.2"
-        app:layout_constraintTop_toBottomOf="@id/tvOverviewLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layoutErrorDetail"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Após ser mantido em cativeiro, o bilionário Tony Stark constrói uma armadura de alta tecnologia para combater o crime." />
-
-    <ProgressBar
-        android:id="@+id/progressDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:indeterminateTint="#FFC107" app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/layoutErrorDetail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarDetail"
-        tools:visibility="gone">
-
-        <TextView
-            android:id="@+id/tvErrorDetailMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#A0B2CD" android:textSize="16sp"
-            android:gravity="center"
-            tools:text="Não foi possível carregar os detalhes do filme." />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRetryDetail"
-            style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivMoviePoster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Tentar Novamente"
-            android:textAllCaps="false"
-            android:textColor="#FFC107" /> </LinearLayout>
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+            app:layout_constraintTop_toBottomOf="@id/toolbarDetail"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:srcCompat="@android:drawable/ic_menu_gallery" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvMovieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="#F8FAFC"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/ivMoviePoster"
+            app:layout_constraintStart_toEndOf="@id/ivMoviePoster"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Homem de Ferro" />
+
+        <TextView
+            android:id="@+id/tvVoteAverage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#FFC107"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieTitle"
+            app:layout_constraintStart_toStartOf="@id/tvMovieTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvMovieTitle"
+            tools:text="★ 8.5" />
+
+        <TextView
+            android:id="@+id/tvMovieGenres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#A0B2CD"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvVoteAverage"
+            app:layout_constraintStart_toStartOf="@id/tvMovieTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvMovieTitle"
+            tools:text="Ação, Aventura, Ficção Científica"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvOverviewLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="Sinopse"
+            android:textColor="#A0B2CD"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/ivMoviePoster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOverview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="#CBD5E1"
+            android:textSize="15sp"
+            android:lineSpacingMultiplier="1.2"
+            app:layout_constraintTop_toBottomOf="@id/tvOverviewLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layoutErrorDetail"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Após ser mantido em cativeiro, o bilionário Tony Stark constrói uma armadura de alta tecnologia para combater o crime." />
+
+        <ProgressBar
+            android:id="@+id/progressDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="#FFC107"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutErrorDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarDetail"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvErrorDetailMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#A0B2CD"
+                android:textSize="16sp"
+                android:gravity="center"
+                tools:text="Não foi possível carregar os detalhes do filme." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRetryDetail"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tentar Novamente"
+                android:textAllCaps="false"
+                android:textColor="#FFC107" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
