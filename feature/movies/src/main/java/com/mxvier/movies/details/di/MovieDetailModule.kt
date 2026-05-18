@@ -1,30 +1,31 @@
 package com.mxvier.movies.details.di
 
-import com.mxvier.movies.details.data.remote.service.MovieDetailsApiService
+import com.mxvier.movies.details.data.remote.service.MovieDetailApiService
 import com.mxvier.movies.details.data.repository.MovieDetailRepository
 import com.mxvier.movies.details.data.repository.MovieDetailRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
-object MovieDetailModule {
+@InstallIn(SingletonComponent::class)
+abstract class MovieDetailModule {
 
-    @Provides
-    @ViewModelScoped
-    fun provideMovieDetailsApiService(retrofit: Retrofit): MovieDetailsApiService {
-        return retrofit.create(MovieDetailsApiService::class.java)
-    }
+    @Binds
+    @Singleton
+    abstract fun bindMovieDetailRepository(
+        movieDetailRepositoryImpl: MovieDetailRepositoryImpl
+    ): MovieDetailRepository
 
-    @Provides
-    @ViewModelScoped
-    fun provideMovieDetailRepository(
-        apiService: MovieDetailsApiService
-    ): MovieDetailRepository {
-        return MovieDetailRepositoryImpl(apiService)
+    companion object {
+        @Provides
+        @Singleton
+        fun provideMovieDetailApiService(retrofit: Retrofit): MovieDetailApiService {
+            return retrofit.create(MovieDetailApiService::class.java)
+        }
     }
 }
