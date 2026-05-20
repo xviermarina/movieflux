@@ -12,6 +12,7 @@ class ApiKeyInterceptor : Interceptor {
         val newRequest = originalRequest.newBuilder()
             .header("Authorization", "Bearer $apiToken")
             .header("accept", "application/json")
+            .header("Accept-Encoding", "identity")
             .build()
 
         return chain.proceed(newRequest)

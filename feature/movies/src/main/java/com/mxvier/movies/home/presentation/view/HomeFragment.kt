@@ -44,10 +44,25 @@ class HomeFragment : Fragment() {
 
         binding.toolbarHome.title = ""
 
+//        setupToolbar()
         setupRecyclerView()
         setupListeners()
         observeUiState()
     }
+
+//    private fun setupToolbar() {
+//        binding.toolbarHome.inflateMenu(R.menu.home_menu)
+//        binding.toolbarHome.setOnMenuItemClickListener { menuItem ->
+//            when (menuItem.itemId) {
+//                R.id.action_search -> {
+//                    val searchUri = "app://movies/search".toUri()
+//                    findNavController().navigate(searchUri)
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
+//    }
 
     private fun setupRecyclerView() {
         val gridLayoutManager = binding.rvMovies.layoutManager as GridLayoutManager
