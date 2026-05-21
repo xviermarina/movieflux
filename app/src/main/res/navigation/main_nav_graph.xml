@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.mxvier.auth.presentation.view.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        android:label="fragment_login">
+        <deepLink app:uri="app://auth/login" />
+    </fragment>
 
     <include app:graph="@navigation/nav_graph_movies" />
+    <include app:graph="@navigation/nav_graph_search" />
+    <include app:graph="@navigation/nav_graph_favorites" />
 </navigation>

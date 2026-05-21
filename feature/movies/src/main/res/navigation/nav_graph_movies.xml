@@ -10,9 +10,7 @@
         android:name="com.mxvier.movies.home.presentation.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
-
         <deepLink app:uri="app://movies/home" />
-
     </fragment>
 
     <fragment
