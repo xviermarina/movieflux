@@ -36,7 +36,7 @@ class SecurityManager @Inject constructor(
     }
 
     fun setBiometricRefused(refused: Boolean) {
-        sharedPreferences.edit().putBoolean("biometric_refused", refused).apply()
+        sharedPreferences.edit { putBoolean("biometric_refused", refused) }
     }
 
     fun isBiometricRefused(): Boolean {
