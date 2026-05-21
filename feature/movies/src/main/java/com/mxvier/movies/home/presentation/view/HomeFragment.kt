@@ -56,6 +56,17 @@ class HomeFragment : Fragment() {
 
     private fun setupToolbar() {
         binding.moviesToolbarHome.inflateMenu(R.menu.home_menu)
+
+        binding.moviesToolbarHome.menu.findItem(R.id.action_search)?.let {
+            it.contentDescription = getString(R.string.movies_search_cd)
+        }
+        binding.moviesToolbarHome.menu.findItem(R.id.action_favorites)?.let {
+            it.contentDescription = getString(R.string.movies_favorites_list_cd)
+        }
+        binding.moviesToolbarHome.menu.findItem(R.id.action_logout)?.let {
+            it.contentDescription = getString(R.string.movies_logout_cd)
+        }
+
         binding.moviesToolbarHome.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_search -> {

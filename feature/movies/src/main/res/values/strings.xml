@@ -15,6 +15,16 @@
     <string name="movies_detail_remove_favorite">Desfavoritar</string>
     <string name="movies_detail_share_chooser_title">Compartilhar filme via</string>
 
+    <string name="movies_back_cd">Voltar para a tela anterior</string>
+    <string name="movies_poster_content_description">Poster do filme %1$s</string>
+    <string name="movies_favorite_star_active_cd">Remover %1$s dos favoritos</string>
+    <string name="movies_favorite_star_inactive_cd">Adicionar %1$s aos favoritos</string>
+    <string name="movies_logout_cd">Sair da conta</string>
+    <string name="movies_search_cd">Pesquisar filmes</string>
+    <string name="movies_favorites_list_cd">Ver lista de favoritos</string>
+    <string name="movies_loading_cd">Carregando filmes…</string>
+    <string name="movies_paging_loading_cd">Carregando mais filmes…</string>
+
     <string name="movies_error_navigating_to_details">Erro ao abrir detalhes do filme</string>
     <string name="movies_error_invalid_movie_id">Código do filme inválido</string>
     <string name="movies_error_label">Erro</string>

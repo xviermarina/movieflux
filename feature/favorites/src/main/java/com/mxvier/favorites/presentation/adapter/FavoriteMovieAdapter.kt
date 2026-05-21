@@ -39,12 +39,15 @@ class FavoriteMovieAdapter(
                 onMovieClick(movie.id)
             }
 
+            binding.favoritesIvFavoriteStar.contentDescription = binding.root.context.getString(com.mxvier.favorites.R.string.favorites_favorite_star_active_cd, movie.title)
             binding.favoritesIvFavoriteStar.setOnClickListener {
                 onFavoriteClick(movie.id)
             }
 
             binding.favoritesTvMovieTitleItem.text = movie.title.trim()
             binding.favoritesTvMovieGenresItem.text = movie.genres ?: ""
+
+            binding.favoritesIvMoviePosterItem.contentDescription = binding.root.context.getString(com.mxvier.favorites.R.string.favorites_poster_content_description, movie.title)
 
             val imageUrl = "${Constants.TMDB_IMAGE_BASE_URL}${movie.posterPath}"
             Glide.with(binding.root.context)

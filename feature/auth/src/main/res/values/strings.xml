@@ -18,4 +18,5 @@
     <string name="auth_biometric_offer_message">Deseja ativar o acesso por biometria para o próximo login?</string>
     <string name="auth_biometric_offer_positive">Sim, ativar</string>
     <string name="auth_biometric_offer_negative_btn">Agora não</string>
+    <string name="auth_loading_cd">Validando dados de acesso…</string>
 </resources>

@@ -3,4 +3,8 @@
     <string name="favorites_toolbar_title">Meus Favoritos</string>
     <string name="favorites_empty_list">Você ainda não salvou nenhum filme.</string>
     <string name="favorites_error_open_details">Erro ao abrir detalhes do filme</string>
+
+    <string name="favorites_back_cd">Voltar para a tela anterior</string>
+    <string name="favorites_poster_content_description">Poster do filme %1$s</string>
+    <string name="favorites_favorite_star_active_cd">Remover %1$s dos favoritos</string>
 </resources>

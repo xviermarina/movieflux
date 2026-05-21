@@ -116,6 +116,8 @@ class MovieDetailFragment : Fragment() {
         if (state is MovieDetailUiState.Success) {
             val movie = state.movie
 
+            binding.moviesIvMoviePoster.contentDescription = getString(com.mxvier.movies.R.string.movies_poster_content_description, movie.title)
+
             binding.moviesTvDetailToolbarTitle.text = getString(com.mxvier.movies.R.string.movies_detail_toolbar_label)
             binding.moviesTvMovieTitle.text = movie.title
             binding.moviesTvVoteAverage.text = String.format("★ %.1f", movie.voteAverage)

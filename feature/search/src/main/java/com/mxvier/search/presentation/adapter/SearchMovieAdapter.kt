@@ -33,9 +33,18 @@ class SearchMovieAdapter(
 
         fun bind(movie: Movie) {
             binding.searchTvMovieTitleItem.text = movie.title
+            binding.searchTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
 
-            binding.searchIvFavoriteStar.setImageResource(android.R.drawable.btn_star_big_on)
+            val (starIcon, starCd) = if (movie.isFavorite) {
+                Pair(android.R.drawable.btn_star_big_on, binding.root.context.getString(com.mxvier.search.R.string.search_favorite_star_active_cd, movie.title))
+            } else {
+                Pair(android.R.drawable.btn_star_big_off, binding.root.context.getString(com.mxvier.search.R.string.search_favorite_star_inactive_cd, movie.title))
+            }
+            binding.searchIvFavoriteStar.setImageResource(starIcon)
+            binding.searchIvFavoriteStar.contentDescription = starCd
             binding.searchIvFavoriteStar.isVisible = movie.isFavorite
+
+            binding.searchIvMoviePosterItem.contentDescription = binding.root.context.getString(com.mxvier.search.R.string.search_poster_content_description, movie.title)
             
             binding.searchIvFavoriteStar.setOnClickListener {
                 onFavoriteClick(movie)

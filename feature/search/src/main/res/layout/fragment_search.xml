@@ -15,6 +15,7 @@
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:navigationIconTint="?attr/colorOnPrimary"
+        app:navigationContentDescription="@string/search_back_cd"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:indeterminateTint="?attr/colorPrimary"
+        android:contentDescription="@string/search_loading_cd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

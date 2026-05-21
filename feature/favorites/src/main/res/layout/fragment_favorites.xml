@@ -15,6 +15,7 @@
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:navigationIconTint="?attr/colorOnPrimary"
+        app:navigationContentDescription="@string/favorites_back_cd"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

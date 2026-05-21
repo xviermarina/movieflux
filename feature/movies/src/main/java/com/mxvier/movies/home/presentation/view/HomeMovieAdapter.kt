@@ -47,8 +47,16 @@ class HomeMovieAdapter(
             binding.moviesTvMovieTitleItem.text = movie.title.trim()
             binding.moviesTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
             
-            binding.moviesIvFavoriteStar.setImageResource(android.R.drawable.btn_star_big_on)
+            val (starIcon, starCd) = if (movie.isFavorite) {
+                Pair(android.R.drawable.btn_star_big_on, binding.root.context.getString(com.mxvier.movies.R.string.movies_favorite_star_active_cd, movie.title))
+            } else {
+                Pair(android.R.drawable.btn_star_big_off, binding.root.context.getString(com.mxvier.movies.R.string.movies_favorite_star_inactive_cd, movie.title))
+            }
+            binding.moviesIvFavoriteStar.setImageResource(starIcon)
+            binding.moviesIvFavoriteStar.contentDescription = starCd
             binding.moviesIvFavoriteStar.isVisible = movie.isFavorite
+
+            binding.moviesIvMoviePosterItem.contentDescription = binding.root.context.getString(com.mxvier.movies.R.string.movies_poster_content_description, movie.title)
 
             val imageUrl = "${Constants.TMDB_IMAGE_BASE_URL}${movie.posterPath}"
             Glide.with(binding.root.context)

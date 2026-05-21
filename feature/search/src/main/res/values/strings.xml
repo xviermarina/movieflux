@@ -3,4 +3,10 @@
     <string name="search_query_hint">Pesquisar filmes…</string>
     <string name="search_error_no_results">Nenhum resultado encontrado.</string>
     <string name="search_error_open_details">Erro ao abrir detalhes</string>
+
+    <string name="search_loading_cd">Buscando filmes…</string>
+    <string name="search_back_cd">Voltar para a tela anterior</string>
+    <string name="search_poster_content_description">Poster do filme %1$s</string>
+    <string name="search_favorite_star_active_cd">Remover %1$s dos favoritos</string>
+    <string name="search_favorite_star_inactive_cd">Adicionar %1$s aos favoritos</string>
 </resources>
