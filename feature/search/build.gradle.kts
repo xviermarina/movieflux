@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":data:movies"))
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

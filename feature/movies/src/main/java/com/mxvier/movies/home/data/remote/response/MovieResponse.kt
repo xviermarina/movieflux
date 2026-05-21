@@ -10,5 +10,8 @@ data class MovieResponse(
         @SerializedName("title") val title: String,
         @SerializedName("overview") val overview: String,
         @SerializedName("poster_path") val posterPath: String?,
-        @SerializedName("vote_average") val voteAverage: Double
+        @SerializedName("vote_average") val voteAverage: Double,
+        @SerializedName("genre_ids") val genreIds: List<Int>? = null,
+        var genreNames: List<String>? = null,
+        var isFavorite: Boolean = false
 )

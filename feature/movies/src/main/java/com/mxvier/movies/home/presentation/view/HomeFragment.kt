@@ -29,7 +29,10 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private val movieAdapter by lazy {
-        HomeMovieAdapter(onMovieClick = ::navigateToMovieDetail)
+        HomeMovieAdapter(
+            onMovieClick = ::navigateToMovieDetail,
+            onFavoriteClick = { movie -> viewModel.toggleFavorite(movie) }
+        )
     }
 
     override fun onCreateView(
@@ -42,33 +45,38 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbarHome.title = ""
+        binding.moviesToolbarHome.title = ""
 
-//        setupToolbar()
+        setupToolbar()
         setupRecyclerView()
         setupListeners()
         observeUiState()
     }
 
-//    private fun setupToolbar() {
-//        binding.toolbarHome.inflateMenu(R.menu.home_menu)
-//        binding.toolbarHome.setOnMenuItemClickListener { menuItem ->
-//            when (menuItem.itemId) {
-//                R.id.action_search -> {
-//                    val searchUri = "app://movies/search".toUri()
-//                    findNavController().navigate(searchUri)
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//    }
+    private fun setupToolbar() {
+        binding.moviesToolbarHome.inflateMenu(R.menu.home_menu)
+        binding.moviesToolbarHome.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_search -> {
+                    val searchUri = "app://movies/search".toUri()
+                    findNavController().navigate(searchUri)
+                    true
+                }
+                R.id.action_favorites -> {
+                    val favoritesUri = "app://movies/favorites".toUri()
+                    findNavController().navigate(favoritesUri)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 
     private fun setupRecyclerView() {
-        val gridLayoutManager = binding.rvMovies.layoutManager as GridLayoutManager
+        val gridLayoutManager = binding.moviesRvMovies.layoutManager as GridLayoutManager
 
-        binding.rvMovies.adapter = movieAdapter
-        binding.rvMovies.addOnScrollListener(
+        binding.moviesRvMovies.adapter = movieAdapter
+        binding.moviesRvMovies.addOnScrollListener(
             EndlessScrollListener(gridLayoutManager) {
                 viewModel.fetchMovies()
             }
@@ -76,7 +84,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnRetry.setOnClickListener {
+        binding.moviesBtnRetry.setOnClickListener {
             viewModel.fetchMovies()
         }
     }
@@ -94,31 +102,31 @@ class HomeFragment : Fragment() {
     private fun handleUiState(state: HomeUiState) {
         when (state) {
             is HomeUiState.Loading -> {
-                binding.progressBar.isVisible = true
-                binding.progressPaging.isVisible = false
-                binding.rvMovies.isVisible = false
-                binding.layoutError.isVisible = false
+                binding.moviesProgressBar.isVisible = true
+                binding.moviesProgressPaging.isVisible = false
+                binding.moviesRvMovies.isVisible = false
+                binding.moviesLayoutError.isVisible = false
             }
             is HomeUiState.Success -> {
-                binding.progressBar.isVisible = false
-                binding.progressPaging.isVisible = state.isPagingLoading
-                binding.rvMovies.isVisible = true
-                binding.layoutError.isVisible = false
+                binding.moviesProgressBar.isVisible = false
+                binding.moviesProgressPaging.isVisible = state.isPagingLoading
+                binding.moviesRvMovies.isVisible = true
+                binding.moviesLayoutError.isVisible = false
 
                 movieAdapter.submitList(state.movies)
             }
             is HomeUiState.Error -> {
-                binding.progressBar.isVisible = false
-                binding.progressPaging.isVisible = false
+                binding.moviesProgressBar.isVisible = false
+                binding.moviesProgressPaging.isVisible = false
 
                 val hasCachedMovies = state.accumulatedMovies.isNotEmpty()
-                binding.rvMovies.isVisible = hasCachedMovies
-                binding.layoutError.isVisible = !hasCachedMovies
+                binding.moviesRvMovies.isVisible = hasCachedMovies
+                binding.moviesLayoutError.isVisible = !hasCachedMovies
 
                 if (hasCachedMovies) {
                     movieAdapter.submitList(state.accumulatedMovies)
                 } else {
-                    binding.tvErrorMessage.text = state.message
+                    binding.moviesTvErrorMessage.text = state.message
                 }
             }
         }
@@ -132,7 +140,7 @@ class HomeFragment : Fragment() {
             context?.let { ctx ->
                 Toast.makeText(
                     ctx,
-                    getString(R.string.error_navigating_to_details),
+                    getString(R.string.movies_error_navigating_to_details),
                     Toast.LENGTH_SHORT
                 ).show()
             }

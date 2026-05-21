@@ -1,0 +1,9 @@
+com.mxvier.data.movies-pngs-0 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/generated/res/pngs/debug
+com.mxvier.data.movies-updated_navigation_xml-1 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/generated/updated_navigation_xml/debug
+com.mxvier.data.movies-mergeDebugResources-2 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.mxvier.data.movies-mergeDebugResources-3 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.mxvier.data.movies-debug-4 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/intermediates/merged_res/debug/mergeDebugResources
+com.mxvier.data.movies-debug-5 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/build/intermediates/packaged_res/debug/packageDebugResources
+com.mxvier.data.movies-debug-6 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/src/debug/res
+com.mxvier.data.movies-main-7 /Users/marinaxavier/Documents/Projetos Android/movieflux/data/movies/src/main/res
+gradleHome-0 /Users/marinaxavier/.gradle

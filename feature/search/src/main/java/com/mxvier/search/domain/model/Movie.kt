@@ -19,7 +19,9 @@ data class Movie(
     val overview: String?,
 
     @SerializedName("release_date")
-    val releaseDate: String?
+    val releaseDate: String?,
+
+    var isFavorite: Boolean = false
 ) {
     /**
      * Gera um template formatado para compartilhamento dos detalhes do filme.

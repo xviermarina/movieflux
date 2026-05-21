@@ -28,7 +28,10 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
     private val movieAdapter by lazy {
-        SearchMovieAdapter(onMovieClick = ::navigateToMovieDetail)
+        SearchMovieAdapter(
+            onMovieClick = ::navigateToMovieDetail,
+            onFavoriteClick = { movie -> viewModel.toggleFavorite(movie) }
+        )
     }
 
     private var searchJob: Job? = null
@@ -43,10 +46,17 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvMovies.adapter = movieAdapter
+        binding.searchRvMovies.adapter = movieAdapter
 
+        setupToolbar()
         setupSearchView()
         observeUiState()
+    }
+
+    private fun setupToolbar() {
+        binding.searchToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupSearchView() {
@@ -86,31 +96,31 @@ class SearchFragment : Fragment() {
     private fun handleUiState(state: SearchUiState) {
         when (state) {
             is SearchUiState.Idle -> {
-                binding.progressBar.isVisible = false
-                binding.layoutError.isVisible = false
+                binding.searchProgressBar.isVisible = false
+                binding.searchLayoutError.isVisible = false
             }
             is SearchUiState.Loading -> {
-                binding.progressBar.isVisible = true
-                binding.rvMovies.isVisible = false
-                binding.layoutError.isVisible = false
+                binding.searchProgressBar.isVisible = true
+                binding.searchRvMovies.isVisible = false
+                binding.searchLayoutError.isVisible = false
             }
             is SearchUiState.Success -> {
-                binding.progressBar.isVisible = false
-                binding.rvMovies.isVisible = true
-                binding.layoutError.isVisible = false
+                binding.searchProgressBar.isVisible = false
+                binding.searchRvMovies.isVisible = true
+                binding.searchLayoutError.isVisible = false
                 movieAdapter.submitList(state.movies)
             }
             is SearchUiState.Empty -> {
-                binding.progressBar.isVisible = false
-                binding.rvMovies.isVisible = false
-                binding.layoutError.isVisible = true
-                binding.tvErrorMessage.text = "Nenhum resultado encontrado."
+                binding.searchProgressBar.isVisible = false
+                binding.searchRvMovies.isVisible = false
+                binding.searchLayoutError.isVisible = true
+                binding.searchTvErrorMessage.text = getString(com.mxvier.search.R.string.search_error_no_results)
             }
             is SearchUiState.Error -> {
-                binding.progressBar.isVisible = false
-                binding.rvMovies.isVisible = false
-                binding.layoutError.isVisible = true
-                binding.tvErrorMessage.text = state.message
+                binding.searchProgressBar.isVisible = false
+                binding.searchRvMovies.isVisible = false
+                binding.searchLayoutError.isVisible = true
+                binding.searchTvErrorMessage.text = state.message
             }
         }
     }
@@ -120,7 +130,7 @@ class SearchFragment : Fragment() {
         try {
             findNavController().navigate(deepLinkUri)
         } catch (e: Exception) {
-            Toast.makeText(context, "Erro ao abrir detalhes", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(com.mxvier.search.R.string.search_error_open_details), Toast.LENGTH_SHORT).show()
         }
     }
 

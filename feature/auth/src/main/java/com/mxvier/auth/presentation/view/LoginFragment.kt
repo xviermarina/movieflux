@@ -56,26 +56,26 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.etUser.doOnTextChanged { _, _, _, _ -> binding.tilUser.error = null }
-        binding.etPassword.doOnTextChanged { _, _, _, _ -> binding.tilPassword.error = null }
+        binding.authEtUser.doOnTextChanged { _, _, _, _ -> binding.authTilUser.error = null }
+        binding.authEtPassword.doOnTextChanged { _, _, _, _ -> binding.authTilPassword.error = null }
 
-        binding.btnLogin.setOnClickListener {
-            val username = binding.etUser.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            val isRememberMeChecked = binding.switchRememberMe.isChecked
+        binding.authBtnLogin.setOnClickListener {
+            val username = binding.authEtUser.text.toString().trim()
+            val password = binding.authEtPassword.text.toString().trim()
+            val isRememberMeChecked = binding.authSwitchRememberMe.isChecked
 
-            binding.tilUser.error = null
-            binding.tilPassword.error = null
+            binding.authTilUser.error = null
+            binding.authTilPassword.error = null
 
             var hasError = false
 
             if (username.isEmpty()) {
-                binding.tilUser.error = "Por favor, preencha o usuário"
+                binding.authTilUser.error = getString(com.mxvier.auth.R.string.auth_error_empty_user)
                 hasError = true
             }
 
             if (password.isEmpty()) {
-                binding.tilPassword.error = "Por favor, preencha a sua senha"
+                binding.authTilPassword.error = getString(com.mxvier.auth.R.string.auth_error_empty_password)
                 hasError = true
             }
 
@@ -95,15 +95,15 @@ class LoginFragment : Fragment() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
                 if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                    Toast.makeText(requireContext(), "Utilize a senha para entrar", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(com.mxvier.auth.R.string.auth_biometric_error_negative), Toast.LENGTH_SHORT).show()
                 }
             }
         })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Login Biométrico")
-            .setSubtitle("Autentique-se usando sua digital ou face")
-            .setNegativeButtonText("Inserir senha manualmente")
+            .setTitle(getString(com.mxvier.auth.R.string.auth_biometric_title))
+            .setSubtitle(getString(com.mxvier.auth.R.string.auth_biometric_subtitle))
+            .setNegativeButtonText(getString(com.mxvier.auth.R.string.auth_biometric_negative_button))
             .setAllowedAuthenticators(BIOMETRIC_STRONG)
             .build()
     }
@@ -119,14 +119,14 @@ class LoginFragment : Fragment() {
 
         if (isBiometricAvailable && !alreadyConfigured) {
             MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.MaterialAlertDialog_Material3)
-                .setTitle("Login Biométrico")
-                .setMessage("Deseja ativar o acesso por biometria para o próximo login?")
-                .setPositiveButton("Sim, ativar") { dialog, _ ->
+                .setTitle(getString(com.mxvier.auth.R.string.auth_biometric_title))
+                .setMessage(getString(com.mxvier.auth.R.string.auth_biometric_offer_message))
+                .setPositiveButton(getString(com.mxvier.auth.R.string.auth_biometric_offer_positive)) { dialog, _ ->
                     viewModel.enableBiometricOption(true)
                     navigateToHome()
                     dialog.dismiss()
                 }
-                .setNegativeButton("Agora não") { dialog, _ ->
+                .setNegativeButton(getString(com.mxvier.auth.R.string.auth_biometric_offer_negative_btn)) { dialog, _ ->
                     viewModel.enableBiometricOption(false)
                     navigateToHome()
                     dialog.dismiss()
@@ -151,7 +151,7 @@ class LoginFragment : Fragment() {
         try {
             navController.navigate(deepLinkUri, navOptions)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Erro ao navegar para a Home", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(com.mxvier.auth.R.string.auth_error_navigate_home), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -166,10 +166,10 @@ class LoginFragment : Fragment() {
                 launch {
                     viewModel.savedUser.collect { savedUser ->
                         if (savedUser != null) {
-                            binding.etUser.setText(savedUser)
-                            binding.switchRememberMe.isChecked = true
+                            binding.authEtUser.setText(savedUser)
+                            binding.authSwitchRememberMe.isChecked = true
                         } else {
-                            binding.switchRememberMe.isChecked = false
+                            binding.authSwitchRememberMe.isChecked = false
                         }
                     }
                 }
@@ -200,8 +200,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun toggleLoading(isLoading: Boolean) {
-        binding.progressLoading.isVisible = isLoading
-        binding.containerForm.isVisible = !isLoading
+        binding.authProgressLoading.isVisible = isLoading
+        binding.authContainerForm.isVisible = !isLoading
     }
 
     override fun onDestroyView() {

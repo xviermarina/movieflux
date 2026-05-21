@@ -1,0 +1,26 @@
+R_DEF: Internal format may change without notice
+local
+dimen favorites_spacing_large
+dimen favorites_spacing_medium
+dimen favorites_spacing_small
+dimen favorites_text_size_body_large
+dimen favorites_text_size_headline
+id favoritesFragment
+id favorites_card_item
+id favorites_container_item
+id favorites_iv_favorite_star
+id favorites_iv_movie_poster_item
+id favorites_layout_empty
+id favorites_rv_movies
+id favorites_toolbar
+id favorites_tv_empty_message
+id favorites_tv_movie_genres_item
+id favorites_tv_movie_title_item
+id favorites_tv_toolbar_title
+id nav_graph_favorites
+layout fragment_favorites
+layout item_favorite_movie
+navigation nav_graph_favorites
+string favorites_empty_list
+string favorites_error_open_details
+string favorites_toolbar_title
