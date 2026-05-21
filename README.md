@@ -50,6 +50,18 @@ O projeto foi construído utilizando **Clean Architecture** e **Modularização 
 
 ---
 
+## ♿ Acessibilidade
+
+O MovieFlux foi desenvolvido seguindo as diretrizes de acessibilidade para garantir uma experiência inclusiva:
+
+*   **Descrições Dinâmicas:** Todos os posters e elementos visuais possuem `contentDescription` contextualizados (ex: *"Poster do filme [Título]"*).
+*   **Feedback de Estado:** As ações de favoritos informam verbalmente via TalkBack se o item está sendo adicionado ou removido, citando o nome do filme.
+*   **Navegação Intuitiva:** Botões de retorno e itens de menu possuem etiquetas claras, facilitando a navegação por gestos ou teclado.
+*   **Informativos de Carregamento:** O usuário é notificado sobre o progresso de operações (carregamento de lista, busca ou validação de login) através de anúncios de acessibilidade nas barras de progresso.
+*   **Contraste e Identidade Visual:** A paleta de cores (Teal Green) foi selecionada e testada para garantir níveis de contraste que atendam aos padrões WCAG, assegurando legibilidade para usuários com baixa visão ou daltonismo, utilizando componentes do Material Design 3.
+
+---
+
 ## 🛠 Tech Stack
 
 *   **Linguagem:** Kotlin
