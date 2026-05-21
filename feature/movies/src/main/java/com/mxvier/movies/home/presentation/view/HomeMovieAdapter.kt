@@ -47,13 +47,8 @@ class HomeMovieAdapter(
             binding.moviesTvMovieTitleItem.text = movie.title.trim()
             binding.moviesTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
             
-            val starIcon = if (movie.isFavorite) {
-                android.R.drawable.btn_star_big_on
-            } else {
-                android.R.drawable.btn_star_big_off
-            }
-            binding.moviesIvFavoriteStar.setImageResource(starIcon)
-            binding.moviesIvFavoriteStar.isVisible = true // Always show the star icon now for interaction
+            binding.moviesIvFavoriteStar.setImageResource(android.R.drawable.btn_star_big_on)
+            binding.moviesIvFavoriteStar.isVisible = movie.isFavorite
 
             val imageUrl = "${Constants.TMDB_IMAGE_BASE_URL}${movie.posterPath}"
             Glide.with(binding.root.context)

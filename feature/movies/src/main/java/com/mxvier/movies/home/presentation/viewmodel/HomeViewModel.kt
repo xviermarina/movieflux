@@ -3,6 +3,7 @@ package com.mxvier.movies.home.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mxvier.core.di.IoDispatcher
+import com.mxvier.core.security.SecurityManager
 import com.mxvier.movies.home.domain.model.Genre
 import com.mxvier.movies.home.domain.repository.GenreRepository
 import com.mxvier.movies.home.data.remote.response.MovieResponse
@@ -24,13 +25,14 @@ class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
     private val genreRepository: GenreRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val securityManager: SecurityManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    private val accumulatedMovies = mutableListOf<MovieResponse>()
+    private var accumulatedMovies = listOf<MovieResponse>()
     private var favoriteIds = setOf<Int>()
     private var genres: List<Genre> = emptyList()
     private var currentPage = 1
@@ -46,13 +48,15 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             favoriteRepository.getFavoriteMovies().collectLatest { favs ->
                 favoriteIds = favs.map { it.id }.toSet()
-                accumulatedMovies.forEach { movie ->
-                    movie.isFavorite = favoriteIds.contains(movie.id)
+                
+                // Create new instances to trigger DiffUtil update
+                accumulatedMovies = accumulatedMovies.map { movie ->
+                    movie.copy(isFavorite = favoriteIds.contains(movie.id))
                 }
                 
                 val currentState = _uiState.value
                 if (currentState is HomeUiState.Success) {
-                    _uiState.value = currentState.copy(movies = accumulatedMovies.toList())
+                    _uiState.value = currentState.copy(movies = accumulatedMovies)
                 }
             }
         }
@@ -77,7 +81,7 @@ class HomeViewModel @Inject constructor(
             _uiState.value = HomeUiState.Loading
         } else {
             _uiState.value = HomeUiState.Success(
-                movies = accumulatedMovies.toList(),
+                movies = accumulatedMovies,
                 isPagingLoading = true
             )
         }
@@ -85,28 +89,32 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             try {
                 ensureGenresLoaded()
-                val newMovies = repository.fetchPopularMovies(currentPage)
+                val newMoviesFromApi = repository.fetchPopularMovies(currentPage)
 
-                if (newMovies.isEmpty()) {
+                if (newMoviesFromApi.isEmpty()) {
                     isLastPage = true
                     if (currentPage == 1) {
                         _uiState.value = HomeUiState.Error("Nenhum filme encontrado.")
                     } else {
                         _uiState.value = HomeUiState.Success(
-                            movies = accumulatedMovies.toList(),
+                            movies = accumulatedMovies,
                             isPagingLoading = false
                         )
                     }
                 } else {
-                    newMovies.forEach { movie ->
-                        movie.genreNames = movie.genreIds?.mapNotNull { id ->
-                            genres.find { it.id == id }?.name
-                        }
-                        movie.isFavorite = favoriteIds.contains(movie.id)
+                    val processedNewMovies = newMoviesFromApi.map { movie ->
+                        movie.copy(
+                            genreNames = movie.genreIds?.mapNotNull { id ->
+                                genres.find { it.id == id }?.name
+                            },
+                            isFavorite = favoriteIds.contains(movie.id)
+                        )
                     }
-                    accumulatedMovies.addAll(newMovies)
+                    
+                    accumulatedMovies = accumulatedMovies + processedNewMovies
+                    
                     _uiState.value = HomeUiState.Success(
-                        movies = accumulatedMovies.toList(),
+                        movies = accumulatedMovies,
                         isPagingLoading = false
                     )
                     currentPage++
@@ -118,7 +126,7 @@ class HomeViewModel @Inject constructor(
                 } else {
                     _uiState.value = HomeUiState.Error(
                         message = errorMessage,
-                        accumulatedMovies = accumulatedMovies.toList()
+                        accumulatedMovies = accumulatedMovies
                     )
                 }
             } finally {
@@ -143,5 +151,9 @@ class HomeViewModel @Inject constructor(
                 favoriteRepository.saveFavorite(favoriteMovie)
             }
         }
+    }
+
+    fun logout() {
+        securityManager.logout()
     }
 }

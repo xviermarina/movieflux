@@ -14,4 +14,10 @@
         android:title="@string/movies_home_favorites_label"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Sair"
+        app:showAsAction="never" />
+
 </menu>

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.mxvier.core.util.Constants
 import com.mxvier.search.databinding.SearchItemMovieBinding
 import com.mxvier.search.domain.model.Movie
+import androidx.core.view.isVisible
 
 class SearchMovieAdapter(
     private val onMovieClick: (Int) -> Unit,
@@ -33,12 +34,8 @@ class SearchMovieAdapter(
         fun bind(movie: Movie) {
             binding.searchTvMovieTitleItem.text = movie.title
 
-            val starIcon = if (movie.isFavorite) {
-                android.R.drawable.btn_star_big_on
-            } else {
-                android.R.drawable.btn_star_big_off
-            }
-            binding.searchIvFavoriteStar.setImageResource(starIcon)
+            binding.searchIvFavoriteStar.setImageResource(android.R.drawable.btn_star_big_on)
+            binding.searchIvFavoriteStar.isVisible = movie.isFavorite
             
             binding.searchIvFavoriteStar.setOnClickListener {
                 onFavoriteClick(movie)

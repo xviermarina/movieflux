@@ -32,12 +32,13 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             favoriteRepository.getFavoriteMovies().collectLatest { favs ->
                 favoriteIds = favs.map { it.id }.toSet()
+                
                 val currentState = _uiState.value
                 if (currentState is SearchUiState.Success) {
-                    currentState.movies.forEach { movie ->
-                        movie.isFavorite = favoriteIds.contains(movie.id)
+                    val updatedMovies = currentState.movies.map { movie ->
+                        movie.copy(isFavorite = favoriteIds.contains(movie.id))
                     }
-                    _uiState.value = SearchUiState.Success(currentState.movies.toList())
+                    _uiState.value = SearchUiState.Success(updatedMovies)
                 }
             }
         }
@@ -54,14 +55,14 @@ class SearchViewModel @Inject constructor(
             try {
                 val results = repository.searchMovies(query, 1)
                 
-                results.forEach { movie ->
-                    movie.isFavorite = favoriteIds.contains(movie.id)
+                val processedResults = results.map { movie ->
+                    movie.copy(isFavorite = favoriteIds.contains(movie.id))
                 }
 
-                _uiState.value = if (results.isEmpty()) {
+                _uiState.value = if (processedResults.isEmpty()) {
                     SearchUiState.Empty
                 } else {
-                    SearchUiState.Success(results)
+                    SearchUiState.Success(processedResults)
                 }
             } catch (e: Exception) {
                 _uiState.value = SearchUiState.Error("Ocorreu um erro ao buscar os filmes.")

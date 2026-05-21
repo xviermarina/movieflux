@@ -26,6 +26,8 @@ import java.util.concurrent.Executor
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.NavOptions
 import androidx.core.net.toUri
+import android.content.Intent
+import android.provider.Settings
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -64,22 +66,14 @@ class LoginFragment : Fragment() {
             val password = binding.authEtPassword.text.toString().trim()
             val isRememberMeChecked = binding.authSwitchRememberMe.isChecked
 
-            binding.authTilUser.error = null
-            binding.authTilPassword.error = null
-
-            var hasError = false
-
             if (username.isEmpty()) {
                 binding.authTilUser.error = getString(com.mxvier.auth.R.string.auth_error_empty_user)
-                hasError = true
+                return@setOnClickListener
             }
-
             if (password.isEmpty()) {
                 binding.authTilPassword.error = getString(com.mxvier.auth.R.string.auth_error_empty_password)
-                hasError = true
+                return@setOnClickListener
             }
-
-            if (hasError) return@setOnClickListener
 
             viewModel.login(username, password, isRememberMeChecked)
         }
@@ -94,9 +88,6 @@ class LoginFragment : Fragment() {
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
-                if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                    Toast.makeText(requireContext(), getString(com.mxvier.auth.R.string.auth_biometric_error_negative), Toast.LENGTH_SHORT).show()
-                }
             }
         })
 
@@ -108,50 +99,69 @@ class LoginFragment : Fragment() {
             .build()
     }
 
-    private fun checkBiometricCapability(): Boolean {
+    private fun handleBiometricOffer() {
         val biometricManager = BiometricManager.from(requireContext())
-        return biometricManager.canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
+        val canAuthenticate = biometricManager.canAuthenticate(BIOMETRIC_STRONG)
+
+        when (canAuthenticate) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                // If they previously refused, but now it's success, we should have reset refusal 
+                // but let's check viewmodel state
+                if (!viewModel.isBiometricEnabled.value && !viewModel.isBiometricRefused.value) {
+                    showOfferDialog(
+                        title = getString(com.mxvier.auth.R.string.auth_biometric_title),
+                        message = getString(com.mxvier.auth.R.string.auth_biometric_offer_message),
+                        positiveAction = { viewModel.enableBiometricOption(true) }
+                    )
+                } else {
+                    navigateToHome()
+                }
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                if (!viewModel.isBiometricRefused.value) {
+                    showOfferDialog(
+                        title = "Biometria não cadastrada",
+                        message = "Seu dispositivo suporta biometria. Deseja cadastrar agora para usar no app?",
+                        positiveAction = {
+                            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                                putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BIOMETRIC_STRONG)
+                            }
+                            startActivity(enrollIntent)
+                        }
+                    )
+                } else {
+                    navigateToHome()
+                }
+            }
+            else -> navigateToHome()
+        }
     }
 
-    private fun showBiometricOfferDialog() {
-        val isBiometricAvailable = checkBiometricCapability()
-        val alreadyConfigured = viewModel.isBiometricEnabled.value
-
-        if (isBiometricAvailable && !alreadyConfigured) {
-            MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.MaterialAlertDialog_Material3)
-                .setTitle(getString(com.mxvier.auth.R.string.auth_biometric_title))
-                .setMessage(getString(com.mxvier.auth.R.string.auth_biometric_offer_message))
-                .setPositiveButton(getString(com.mxvier.auth.R.string.auth_biometric_offer_positive)) { dialog, _ ->
-                    viewModel.enableBiometricOption(true)
-                    navigateToHome()
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(com.mxvier.auth.R.string.auth_biometric_offer_negative_btn)) { dialog, _ ->
-                    viewModel.enableBiometricOption(false)
-                    navigateToHome()
-                    dialog.dismiss()
-                }
-                .setCancelable(false)
-                .show()
-        } else {
-            navigateToHome()
-        }
+    private fun showOfferDialog(title: String, message: String, positiveAction: () -> Unit) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Sim") { _, _ -> 
+                positiveAction()
+                navigateToHome()
+            }
+            .setNegativeButton("Agora não") { _, _ ->
+                viewModel.enableBiometricOption(false) // This sets refusal
+                navigateToHome()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     private fun navigateToHome() {
         val deepLinkUri = "app://movies/home".toUri()
-        val navController = findNavController()
-
         val navOptions = NavOptions.Builder()
-            .setPopUpTo(navController.currentDestination?.id ?: return, true)
-            .setEnterAnim(android.R.anim.fade_in)
-            .setExitAnim(android.R.anim.fade_out)
+            .setPopUpTo(findNavController().graph.startDestinationId, true)
             .build()
-
         try {
-            navController.navigate(deepLinkUri, navOptions)
+            findNavController().navigate(deepLinkUri, navOptions)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), getString(com.mxvier.auth.R.string.auth_error_navigate_home), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Erro ao navegar", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -160,41 +170,39 @@ class LoginFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { state ->
-                        handleUiState(state)
-                    }
-                }
-                launch {
-                    viewModel.savedUser.collect { savedUser ->
-                        if (savedUser != null) {
-                            binding.authEtUser.setText(savedUser)
-                            binding.authSwitchRememberMe.isChecked = true
-                        } else {
-                            binding.authSwitchRememberMe.isChecked = false
+                        when (state) {
+                            is LoginUiState.Loading -> toggleLoading(true)
+                            is LoginUiState.Success -> handleBiometricOffer()
+                            is LoginUiState.Error -> {
+                                toggleLoading(false)
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                            }
+                            else -> toggleLoading(false)
                         }
                     }
                 }
                 launch {
-                    viewModel.isBiometricEnabled.collect { isEnabled ->
-                        if (isEnabled && checkBiometricCapability()) {
+                    viewModel.savedUser.collect { user ->
+                        if (user != null) {
+                            binding.authEtUser.setText(user)
+                            binding.authSwitchRememberMe.isChecked = true
+                        }
+                    }
+                }
+                launch {
+                    viewModel.isBiometricEnabled.collect { enabled ->
+                        if (enabled && BiometricManager.from(requireContext()).canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
                             biometricPrompt.authenticate(promptInfo)
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private fun handleUiState(state: LoginUiState) {
-        when (state) {
-            is LoginUiState.Initial -> toggleLoading(isLoading = false)
-            is LoginUiState.Loading -> toggleLoading(isLoading = true)
-            is LoginUiState.Success -> {
-                toggleLoading(isLoading = false)
-                showBiometricOfferDialog()
-            }
-            is LoginUiState.Error -> {
-                toggleLoading(isLoading = false)
-                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                launch {
+                    // Check if biometry was registered since last refusal
+                    if (viewModel.isBiometricRefused.value && 
+                        BiometricManager.from(requireContext()).canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
+                        viewModel.resetBiometricRefusal()
+                    }
+                }
             }
         }
     }

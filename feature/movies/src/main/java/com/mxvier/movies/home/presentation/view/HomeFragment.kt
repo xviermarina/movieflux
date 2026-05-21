@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mxvier.movies.R
@@ -65,6 +66,15 @@ class HomeFragment : Fragment() {
                 R.id.action_favorites -> {
                     val favoritesUri = "app://movies/favorites".toUri()
                     findNavController().navigate(favoritesUri)
+                    true
+                }
+                R.id.action_logout -> {
+                    viewModel.logout()
+                    val loginUri = "app://auth/login".toUri()
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(findNavController().graph.id, true)
+                        .build()
+                    findNavController().navigate(loginUri, navOptions)
                     true
                 }
                 else -> false
