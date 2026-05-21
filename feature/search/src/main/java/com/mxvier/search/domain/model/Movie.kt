@@ -21,6 +21,11 @@ data class Movie(
     @SerializedName("release_date")
     val releaseDate: String?,
 
+    @SerializedName("genre_ids")
+    val genreIds: List<Int>? = null,
+
+    var genreNames: List<String>? = null,
+
     var isFavorite: Boolean = false
 ) {
     /**

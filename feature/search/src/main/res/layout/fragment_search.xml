@@ -25,11 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/search_spacing_medium"
-            android:background="?attr/colorSurfaceVariant"
+            android:background="@android:color/transparent"
             app:queryBackground="@android:color/transparent"
             app:iconifiedByDefault="false"
             app:queryHint="@string/search_query_hint"
-            app:theme="?attr/actionBarTheme" />
+            app:theme="@style/Theme.MovieFlux.SearchView" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
