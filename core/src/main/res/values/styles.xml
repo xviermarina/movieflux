@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MovieFlux.SearchView" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:editTextColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">?attr/colorOnPrimary</item>
+        <item name="colorControlNormal">?attr/colorOnPrimary</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+</resources>

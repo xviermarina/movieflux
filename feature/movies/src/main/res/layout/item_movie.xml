@@ -1,86 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://tools.android.com/tools"
-    android:id="@+id/cardMovie"
+    android:id="@+id/movies_card_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:clickable="true"
-    android:focusable="true"
+    android:layout_margin="@dimen/movies_spacing_small"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/colorOutlineVariant">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movies_container_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorSurface">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivMoviePoster"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenery" />
-
-        <TextView
-            android:id="@+id/tvMovieTitle"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/movies_iv_movie_poster_item"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/layoutRating"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster"
-            tools:text="Duna: Parte Dois" />
-
-        <LinearLayout
-            android:id="@+id/layoutRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="4dp"
-                android:contentDescription="@null"
-                android:src="@android:drawable/btn_star_big_on" />
-
-            <TextView
-                android:id="@+id/tvMovieRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="8.5" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
+            android:layout_height="@dimen/movies_poster_height_medium"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/movies_iv_favorite_star"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:src="@android:drawable/btn_star_big_off"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            app:layout_constraintTop_toTopOf="@id/movies_iv_movie_poster_item"
+            app:layout_constraintEnd_toEndOf="@id/movies_iv_movie_poster_item"
+            tools:visibility="visible"
+            tools:contentDescription="Favorito" />
+
+        <TextView
+            android:id="@+id/movies_tv_movie_title_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/movies_item_padding_horizontal"
+            android:paddingTop="@dimen/movies_item_padding_vertical"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="@dimen/movies_text_size_body_small"
+            android:textStyle="bold"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/movies_iv_movie_poster_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/movies_tv_movie_genres_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/movies_item_padding_horizontal"
+            android:paddingBottom="@dimen/movies_item_padding_vertical"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/movies_text_size_caption"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/movies_tv_movie_title_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

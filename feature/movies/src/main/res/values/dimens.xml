@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generic Spacing -->
+    <dimen name="movies_spacing_tiny">4dp</dimen>
+    <dimen name="movies_spacing_small">8dp</dimen>
+    <dimen name="movies_spacing_medium">16dp</dimen>
+    <dimen name="movies_spacing_large">24dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="movies_text_size_caption">11sp</dimen>
+    <dimen name="movies_text_size_body_small">14sp</dimen>
+    <dimen name="movies_text_size_body_medium">15sp</dimen>
+    <dimen name="movies_text_size_body_large">16sp</dimen>
+    <dimen name="movies_text_size_headline">22sp</dimen>
+
+    <!-- Component Specific -->
+    <dimen name="movies_poster_width_small">120dp</dimen>
+    <dimen name="movies_poster_height_small">180dp</dimen>
+    <dimen name="movies_poster_height_medium">240dp</dimen>
+    <dimen name="movies_progress_paging_height">40dp</dimen>
+    <dimen name="movies_item_padding_horizontal">12dp</dimen>
+    <dimen name="movies_item_padding_vertical">12dp</dimen>
+</resources>

@@ -5,112 +5,113 @@
     xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:background="#0B131F"
+    android:padding="@dimen/auth_spacing_large"
+    android:background="?android:attr/windowBackground"
     tools:context=".presentation.view.LoginFragment">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/auth_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="@string/login_fragment_title"
-        android:textSize="36sp"
+        android:layout_marginTop="@dimen/auth_margin_top_title"
+        android:text="@string/auth_login_title"
+        android:textSize="@dimen/auth_text_size_title"
         android:textStyle="bold"
-        android:textColor="#FFC107"
+        android:textColor="?attr/colorPrimary"
         android:letterSpacing="0.15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/container_form"
+        android:id="@+id/auth_container_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="@dimen/auth_spacing_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_user"
+            android:id="@+id/auth_til_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/login_fragment_first_input_hint"
-            android:textColorHint="#A0B2CD"
-            app:hintTextColor="#FFC107"
-            app:boxStrokeColor="#FFC107"
-            app:boxBackgroundColor="#152238"
+            android:layout_marginBottom="@dimen/auth_spacing_medium"
+            android:hint="@string/auth_login_user_hint"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            app:hintTextColor="?attr/colorPrimary"
+            app:boxStrokeColor="?attr/colorPrimary"
+            app:boxBackgroundColor="?attr/colorSurfaceVariant"
             app:boxBackgroundMode="filled"
-            app:startIconTint="#A0B2CD">
+            app:startIconTint="?attr/colorOnSurfaceVariant">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_user"
+                android:id="@+id/auth_et_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="text"
-                android:textColorHint="#A0B2CD"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_password"
+            android:id="@+id/auth_til_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/login_fragment_second_input_hint"
-            android:textColorHint="#A0B2CD"
-            app:hintTextColor="#FFC107"
-            app:boxStrokeColor="#FFC107"
-            app:boxBackgroundColor="#152238"
+            android:layout_marginBottom="@dimen/auth_spacing_medium"
+            android:hint="@string/auth_login_password_hint"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            app:hintTextColor="?attr/colorPrimary"
+            app:boxStrokeColor="?attr/colorPrimary"
+            app:boxBackgroundColor="?attr/colorSurfaceVariant"
             app:boxBackgroundMode="filled"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="#A0B2CD"
-            app:startIconTint="#A0B2CD">
+            app:passwordToggleTint="?attr/colorOnSurfaceVariant"
+            app:startIconTint="?attr/colorOnSurfaceVariant">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_password"
+                android:id="@+id/auth_et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#A0B2CD"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchRememberMe"
+            android:id="@+id/auth_switch_remember_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="@string/login_fragment_switch_label"
-            android:textColor="#A0B2CD"
-            android:textSize="14sp"
-            app:thumbTint="#FFC107"
-            app:trackTint="#152238" />
+            android:layout_marginBottom="@dimen/auth_spacing_large"
+            android:text="@string/auth_login_remember_me_label"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/auth_text_size_small"
+            app:thumbTint="?attr/colorPrimary"
+            app:trackTint="?attr/colorSurfaceVariant" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
+            android:id="@+id/auth_btn_login"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="@string/login_fragment_button_label"
-            android:textSize="16sp"
+            android:layout_height="@dimen/auth_button_height"
+            android:text="@string/auth_login_button_label"
+            android:textSize="@dimen/auth_text_size_medium"
             android:textStyle="bold"
-            android:textColor="#0B131F"
-            app:backgroundTint="#FFC107"
-            app:cornerRadius="8dp" />
+            android:textColor="?attr/colorOnPrimary"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="@dimen/auth_button_corner_radius" />
 
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_loading"
+        android:id="@+id/auth_progress_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:indeterminateTint="#FFC107"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:contentDescription="@string/auth_loading_cd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?android:attr/windowBackground"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movies_container_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/movies_toolbar_detail"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="?attr/colorOnPrimary"
+            app:navigationContentDescription="@string/movies_back_cd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/movies_tv_detail_toolbar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="@dimen/movies_text_size_headline"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="@string/movies_detail_toolbar_label" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/movies_group_success_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="movies_iv_movie_poster,movies_tv_movie_title,movies_tv_vote_average,movies_tv_movie_genres,movies_btn_favorite_content,movies_tv_overview_label,movies_tv_overview" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/movies_iv_movie_poster"
+            android:layout_width="@dimen/movies_poster_width_small"
+            android:layout_height="@dimen/movies_poster_height_small"
+            android:layout_marginStart="@dimen/movies_spacing_medium"
+            android:layout_marginTop="@dimen/movies_spacing_medium"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+            app:layout_constraintTop_toBottomOf="@id/movies_toolbar_detail"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/movies_tv_movie_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/movies_spacing_medium"
+            android:layout_marginEnd="@dimen/movies_spacing_medium"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="@dimen/movies_text_size_headline"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/movies_iv_movie_poster"
+            app:layout_constraintStart_toEndOf="@id/movies_iv_movie_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Homem de Ferro" />
+
+        <TextView
+            android:id="@+id/movies_tv_vote_average"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/movies_spacing_small"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/movies_text_size_body_large"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/movies_tv_movie_title"
+            app:layout_constraintStart_toStartOf="@id/movies_tv_movie_title"
+            app:layout_constraintEnd_toEndOf="@id/movies_tv_movie_title"
+            tools:text="★ 8.5" />
+
+        <TextView
+            android:id="@+id/movies_tv_movie_genres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/movies_spacing_small"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/movies_text_size_body_small"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/movies_tv_vote_average"
+            app:layout_constraintStart_toStartOf="@id/movies_tv_movie_title"
+            app:layout_constraintEnd_toEndOf="@id/movies_tv_movie_title"
+            tools:text="Ação, Aventura, Ficção Científica"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/movies_btn_favorite_content"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/movies_spacing_small"
+            android:text="@string/movies_detail_add_favorite"
+            app:icon="@android:drawable/btn_star_big_off"
+            app:layout_constraintTop_toBottomOf="@id/movies_tv_movie_genres"
+            app:layout_constraintStart_toStartOf="@id/movies_tv_movie_title"
+            app:layout_constraintEnd_toEndOf="@id/movies_tv_movie_title" />
+
+        <TextView
+            android:id="@+id/movies_tv_overview_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/movies_spacing_medium"
+            android:layout_marginTop="@dimen/movies_spacing_large"
+            android:layout_marginEnd="@dimen/movies_spacing_medium"
+            android:text="@string/movies_detail_overview_label"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/movies_text_size_body_large"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/movies_iv_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/movies_tv_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/movies_spacing_medium"
+            android:layout_marginTop="@dimen/movies_spacing_small"
+            android:layout_marginEnd="@dimen/movies_spacing_medium"
+            android:layout_marginBottom="@dimen/movies_spacing_medium"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="@dimen/movies_text_size_body_medium"
+            android:lineSpacingMultiplier="1.2"
+            app:layout_constraintTop_toBottomOf="@id/movies_tv_overview_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/movies_layout_error_detail"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Após ser mantido em cativeiro, o bilionário Tony Stark constrói uma armadura de alta tecnologia para combater o crime." />
+
+        <ProgressBar
+            android:id="@+id/movies_progress_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="?attr/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/movies_layout_error_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/movies_spacing_large"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/movies_spacing_medium"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movies_toolbar_detail"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/movies_tv_error_detail_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="@dimen/movies_text_size_body_large"
+                android:gravity="center"
+                tools:text="@string/movies_detail_error_loading" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/movies_btn_retry_detail"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movies_spacing_medium"
+                android:text="@string/movies_detail_retry_label"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorPrimary" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

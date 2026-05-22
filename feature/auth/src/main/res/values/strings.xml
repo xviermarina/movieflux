@@ -1,7 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_fragment_button_label">Entrar</string>
-    <string name="login_fragment_first_input_hint">Usuário</string>
-    <string name="login_fragment_second_input_hint">Senha</string>
-    <string name="login_fragment_title">MovieFlux</string>
-    <string name="login_fragment_switch_label">Lembrar meus dados</string>
+    <string name="auth_login_button_label">Entrar</string>
+    <string name="auth_login_user_hint">Usuário</string>
+    <string name="auth_login_password_hint">Senha</string>
+    <string name="auth_login_title">MovieFlux</string>
+    <string name="auth_login_remember_me_label">Lembrar meus dados</string>
+
+    <string name="auth_error_empty_user">Por favor, preencha o usuário</string>
+    <string name="auth_error_empty_password">Por favor, preencha a sua senha</string>
+    <string name="auth_error_navigate_home">Erro ao navegar para a Home</string>
+
+    <string name="auth_biometric_title">Login Biométrico</string>
+    <string name="auth_biometric_subtitle">Autentique-se usando sua digital ou face</string>
+    <string name="auth_biometric_negative_button">Inserir senha manualmente</string>
+    <string name="auth_biometric_error_negative">Utilize a senha para entrar</string>
+
+    <string name="auth_biometric_offer_message">Deseja ativar o acesso por biometria para o próximo login?</string>
+    <string name="auth_biometric_offer_positive">Sim, ativar</string>
+    <string name="auth_biometric_offer_negative_btn">Agora não</string>
+    <string name="auth_loading_cd">Validando dados de acesso…</string>
 </resources>

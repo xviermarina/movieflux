@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_spacing_small">8dp</dimen>
+    <dimen name="search_spacing_medium">16dp</dimen>
+    <dimen name="search_spacing_large">24dp</dimen>
+
+    <dimen name="search_text_size_body_small">14sp</dimen>
+    <dimen name="search_text_size_body_large">16sp</dimen>
+
+    <dimen name="search_poster_height_medium">240dp</dimen>
+    <dimen name="search_item_padding">12dp</dimen>
+</resources>

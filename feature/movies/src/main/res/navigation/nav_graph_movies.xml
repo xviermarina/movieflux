@@ -7,11 +7,20 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mxvier.movies.presentation.view.HomeFragment"
+        android:name="com.mxvier.movies.home.presentation.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
-
         <deepLink app:uri="app://movies/home" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.mxvier.movies.details.presentation.MovieDetailFragment"
+        android:label="MovieDetailFragment"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+        <deepLink app:uri="app://movies/detail/{movieId}" />
     </fragment>
 </navigation>

@@ -1,0 +1,82 @@
+package com.mxvier.movies.home.presentation.view
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.mxvier.core.util.Constants
+import com.mxvier.movies.databinding.ItemMovieBinding
+import com.mxvier.movies.home.data.remote.response.MovieResponse
+import androidx.core.view.isVisible
+
+class HomeMovieAdapter(
+    private val onMovieClick: (movieId: Int) -> Unit,
+    private val onFavoriteClick: (movie: MovieResponse) -> Unit
+) : ListAdapter<MovieResponse, HomeMovieAdapter.MovieViewHolder>(MovieDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        val binding = ItemMovieBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return MovieViewHolder(binding, onMovieClick, onFavoriteClick)
+    }
+
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class MovieViewHolder(
+        private val binding: ItemMovieBinding,
+        private val onMovieClick: (movieId: Int) -> Unit,
+        private val onFavoriteClick: (movie: MovieResponse) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(movie: MovieResponse) {
+            binding.root.setOnClickListener {
+                onMovieClick(movie.id)
+            }
+
+            binding.moviesIvFavoriteStar.setOnClickListener {
+                onFavoriteClick(movie)
+            }
+
+            binding.moviesTvMovieTitleItem.text = movie.title.trim()
+            binding.moviesTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
+            
+            val (starIcon, starCd) = if (movie.isFavorite) {
+                Pair(android.R.drawable.btn_star_big_on, binding.root.context.getString(com.mxvier.movies.R.string.movies_favorite_star_active_cd, movie.title))
+            } else {
+                Pair(android.R.drawable.btn_star_big_off, binding.root.context.getString(com.mxvier.movies.R.string.movies_favorite_star_inactive_cd, movie.title))
+            }
+            binding.moviesIvFavoriteStar.setImageResource(starIcon)
+            binding.moviesIvFavoriteStar.contentDescription = starCd
+            binding.moviesIvFavoriteStar.isVisible = movie.isFavorite
+
+            binding.moviesIvMoviePosterItem.contentDescription = binding.root.context.getString(com.mxvier.movies.R.string.movies_poster_content_description, movie.title)
+
+            val imageUrl = "${Constants.TMDB_IMAGE_BASE_URL}${movie.posterPath}"
+            Glide.with(binding.root.context)
+                .load(imageUrl)
+                .centerCrop()
+                .placeholder(android.R.drawable.progress_horizontal)
+                .error(android.R.drawable.ic_menu_gallery)
+                .into(binding.moviesIvMoviePosterItem)
+        }
+    }
+
+    class MovieDiffCallback : DiffUtil.ItemCallback<MovieResponse>() {
+        override fun areItemsTheSame(oldItem: MovieResponse, newItem: MovieResponse): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MovieResponse, newItem: MovieResponse): Boolean {
+            return oldItem.id == newItem.id &&
+                    oldItem.title == newItem.title &&
+                    oldItem.isFavorite == newItem.isFavorite
+        }
+    }
+}

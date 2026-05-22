@@ -41,6 +41,8 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:movies"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:favorites"))
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
