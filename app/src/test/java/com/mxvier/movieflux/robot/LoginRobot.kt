@@ -1,5 +1,9 @@
 package com.mxvier.movieflux.robot
 
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -10,30 +14,29 @@ import com.mxvier.auth.R as authR
 import org.hamcrest.Matchers.allOf
 import org.robolectric.shadows.ShadowLooper
 
-class LoginRobot {
+class LoginRobot(private val composeTestRule: ComposeTestRule) {
 
     fun waitTitle() = apply {
-        onView(isRoot()).perform(waitForView(allOf(withId(authR.id.auth_tv_title), isDisplayed())))
+        composeTestRule.onNodeWithText("MovieFlux").assertExists()
     }
 
     fun typeUser(user: String) = apply {
-        onView(withId(authR.id.auth_et_user)).perform(typeText(user), closeSoftKeyboard())
+        composeTestRule.onNodeWithText("Usuário").performTextInput(user)
     }
 
     fun typePassword(password: String) = apply {
-        onView(withId(authR.id.auth_et_password)).perform(typeText(password), closeSoftKeyboard())
+        composeTestRule.onNodeWithText("Senha").performTextInput(password)
     }
 
     fun clickLogin() = apply {
-        onView(withId(authR.id.auth_btn_login)).perform(click())
-        // UnconfinedTestDispatcher skips delay(1500) automatically
+        composeTestRule.onNodeWithText("Entrar").performClick()
         ShadowLooper.idleMainLooper()
     }
 
     fun handleBiometricIfVisible() = apply {
         ShadowLooper.idleMainLooper()
         try {
-            onView(withText("Agora não")).perform(click())
+            composeTestRule.onNodeWithText("Agora não").performClick()
             ShadowLooper.idleMainLooper()
         } catch (e: Exception) {
             try {
@@ -45,8 +48,8 @@ class LoginRobot {
     }
 
     fun checkTitleIsVisible() = apply {
-        onView(withId(authR.id.auth_tv_title)).check(matches(isDisplayed()))
+        composeTestRule.onNodeWithText("MovieFlux").assertExists()
     }
 }
 
-fun loginRobot(func: LoginRobot.() -> Unit) = LoginRobot().apply { func() }
+fun loginRobot(composeTestRule: ComposeTestRule, func: LoginRobot.() -> Unit) = LoginRobot(composeTestRule).apply { func() }

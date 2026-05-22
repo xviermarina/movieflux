@@ -29,7 +29,10 @@ class MovieDetailViewModel @Inject constructor(
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
+    private var currentMovieId: Int? = null
+
     fun fetchMovieDetails(movieId: Int) {
+        currentMovieId = movieId
         _uiState.value = MovieDetailUiState.Loading
 
         viewModelScope.launch(dispatcher) {
@@ -43,6 +46,10 @@ class MovieDetailViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun retryFetch() {
+        currentMovieId?.let { fetchMovieDetails(it) }
     }
 
     private fun observeFavoriteStatus(movieId: Int) {

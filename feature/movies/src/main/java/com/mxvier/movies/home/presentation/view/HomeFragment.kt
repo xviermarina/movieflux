@@ -19,151 +19,55 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mxvier.movies.R
-import com.mxvier.movies.databinding.FragmentHomeBinding
-import com.mxvier.movies.home.presentation.viewmodel.HomeUiState
-import com.mxvier.movies.home.presentation.viewmodel.HomeViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import com.mxvier.core.ui.theme.MovieFluxTheme
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("Binding acessado fora do ciclo de vida da View")
-
     private val viewModel: HomeViewModel by viewModels()
-    private val movieAdapter by lazy {
-        HomeMovieAdapter(
-            onMovieClick = ::navigateToMovieDetail,
-            onFavoriteClick = { movie -> viewModel.toggleFavorite(movie) }
-        )
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return _binding?.root
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MovieFluxTheme {
+                    HomeScreen(
+                        viewModel = viewModel,
+                        onSearchClick = { navigateToSearch() },
+                        onFavoritesClick = { navigateToFavorites() },
+                        onLogoutClick = { handleLogout() },
+                        onMovieClick = { navigateToMovieDetail(it) }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun navigateToSearch() {
+        val searchUri = "app://movies/search".toUri()
+        findNavController().navigate(searchUri)
+    }
+
+    private fun navigateToFavorites() {
+        val favoritesUri = "app://movies/favorites".toUri()
+        findNavController().navigate(favoritesUri)
+    }
+
+    private fun handleLogout() {
+        viewModel.logout()
+        val loginUri = "app://auth/login".toUri()
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(findNavController().graph.id, true)
+            .build()
+        findNavController().navigate(loginUri, navOptions)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.moviesToolbarHome.title = ""
-
-        setupToolbar()
-        setupRecyclerView()
-        setupListeners()
-        observeUiState()
-    }
-
-    private fun setupToolbar() {
-        binding.moviesToolbarHome.inflateMenu(R.menu.home_menu)
-
-        binding.moviesToolbarHome.menu.findItem(R.id.action_search)?.let {
-            it.contentDescription = getString(R.string.movies_search_cd)
-        }
-        binding.moviesToolbarHome.menu.findItem(R.id.action_favorites)?.let {
-            it.contentDescription = getString(R.string.movies_favorites_list_cd)
-        }
-        binding.moviesToolbarHome.menu.findItem(R.id.action_logout)?.let {
-            it.contentDescription = getString(R.string.movies_logout_cd)
-        }
-
-        binding.moviesToolbarHome.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_search -> {
-                    val searchUri = "app://movies/search".toUri()
-                    findNavController().navigate(searchUri)
-                    true
-                }
-                R.id.action_favorites -> {
-                    val favoritesUri = "app://movies/favorites".toUri()
-                    findNavController().navigate(favoritesUri)
-                    true
-                }
-                R.id.action_logout -> {
-                    viewModel.logout()
-                    val loginUri = "app://auth/login".toUri()
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(findNavController().graph.id, true)
-                        .build()
-                    findNavController().navigate(loginUri, navOptions)
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun setupRecyclerView() {
-        val gridLayoutManager = binding.moviesRvMovies.layoutManager as GridLayoutManager
-
-        binding.moviesRvMovies.adapter = movieAdapter
-        binding.moviesRvMovies.addOnScrollListener(
-            EndlessScrollListener(gridLayoutManager) {
-                viewModel.fetchMovies()
-            }
-        )
-    }
-
-    private fun setupListeners() {
-        binding.moviesBtnRetry.setOnClickListener {
-            viewModel.fetchMovies()
-        }
-    }
-
-    private fun observeUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    handleUiState(state)
-                }
-            }
-        }
-    }
-
-    private fun handleUiState(state: HomeUiState) {
-        when (state) {
-            is HomeUiState.Loading -> {
-                binding.moviesProgressBar.isVisible = true
-                binding.moviesProgressPaging.isVisible = false
-                binding.moviesRvMovies.isVisible = false
-                binding.moviesLayoutError.isVisible = false
-                binding.moviesLayoutEmpty.isVisible = false
-            }
-            is HomeUiState.Empty -> {
-                binding.moviesProgressBar.isVisible = false
-                binding.moviesProgressPaging.isVisible = false
-                binding.moviesRvMovies.isVisible = false
-                binding.moviesLayoutError.isVisible = false
-                binding.moviesLayoutEmpty.isVisible = true
-            }
-            is HomeUiState.Success -> {
-                binding.moviesProgressBar.isVisible = false
-                binding.moviesProgressPaging.isVisible = state.isPagingLoading
-                binding.moviesRvMovies.isVisible = true
-                binding.moviesLayoutError.isVisible = false
-                binding.moviesLayoutEmpty.isVisible = false
-
-                movieAdapter.submitList(state.movies)
-            }
-            is HomeUiState.Error -> {
-                binding.moviesProgressBar.isVisible = false
-                binding.moviesProgressPaging.isVisible = false
-                binding.moviesLayoutEmpty.isVisible = false
-
-                val hasCachedMovies = state.accumulatedMovies.isNotEmpty()
-                binding.moviesRvMovies.isVisible = hasCachedMovies
-                binding.moviesLayoutError.isVisible = !hasCachedMovies
-
-                if (hasCachedMovies) {
-                    movieAdapter.submitList(state.accumulatedMovies)
-                } else {
-                    binding.moviesTvErrorMessage.text = state.message
-                }
-            }
-        }
     }
 
     private fun navigateToMovieDetail(movieId: Int) {

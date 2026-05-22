@@ -1,5 +1,6 @@
 package com.mxvier.movieflux.presentation
 
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.mxvier.movieflux.MainActivity
 import com.mxvier.movieflux.robot.loginRobot
 import com.mxvier.auth.presentation.view.LoginFragment
@@ -20,8 +21,11 @@ import org.robolectric.shadows.ShadowLooper
 @Config(sdk = [34], application = HiltTestApplication::class)
 class LoginRobolectricTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Before
     fun init() {
@@ -30,37 +34,33 @@ class LoginRobolectricTest {
 
     @Test
     fun loginFlow_ElementsAreDisplayed() {
-        launchActivity<MainActivity>().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = LoginFragment()
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment, "login")
-                    .commitNow()
-            }
+        composeTestRule.activity.let { activity ->
+            val fragment = LoginFragment()
+            activity.supportFragmentManager.beginTransaction()
+                .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment, "login")
+                .commitNow()
+        }
 
-            loginRobot {
-                waitTitle()
-                checkTitleIsVisible()
-            }
+        loginRobot(composeTestRule) {
+            waitTitle()
+            checkTitleIsVisible()
         }
     }
 
     @Test
     fun loginFlow_CanTypeCredentials() {
-        launchActivity<MainActivity>().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = LoginFragment()
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment, "login")
-                    .commitNow()
-            }
+        composeTestRule.activity.let { activity ->
+            val fragment = LoginFragment()
+            activity.supportFragmentManager.beginTransaction()
+                .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment, "login")
+                .commitNow()
+        }
 
-            loginRobot {
-                waitTitle()
-                typeUser("admin")
-                typePassword("123456")
-                clickLogin()
-            }
+        loginRobot(composeTestRule) {
+            waitTitle()
+            typeUser("admin")
+            typePassword("123456")
+            clickLogin()
         }
     }
 }

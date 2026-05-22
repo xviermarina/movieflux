@@ -17,23 +17,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mxvier.auth.databinding.FragmentLoginBinding
-import com.mxvier.auth.presentation.viewmodel.LoginUiState
-import com.mxvier.auth.presentation.viewmodel.LoginViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.util.concurrent.Executor
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.NavOptions
-import androidx.core.net.toUri
-import android.content.Intent
-import android.provider.Settings
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import com.mxvier.core.ui.theme.MovieFluxTheme
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("Binding acessado fora do ciclo de vida da View")
-
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
@@ -41,9 +30,20 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return _binding?.root
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MovieFluxTheme {
+                    LoginScreen(
+                        viewModel = viewModel,
+                        onLoginClick = { user, pass, remember ->
+                            viewModel.login(user, pass, remember)
+                        }
+                    )
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,32 +51,9 @@ class LoginFragment : Fragment() {
 
         executor = ContextCompat.getMainExecutor(requireContext())
         setupBiometricPrompt()
-        setupListeners()
         observeUiState()
 
         viewModel.loadSavedPreferences()
-    }
-
-    private fun setupListeners() {
-        binding.authEtUser.doOnTextChanged { _, _, _, _ -> binding.authTilUser.error = null }
-        binding.authEtPassword.doOnTextChanged { _, _, _, _ -> binding.authTilPassword.error = null }
-
-        binding.authBtnLogin.setOnClickListener {
-            val username = binding.authEtUser.text.toString().trim()
-            val password = binding.authEtPassword.text.toString().trim()
-            val isRememberMeChecked = binding.authSwitchRememberMe.isChecked
-
-            if (username.isEmpty()) {
-                binding.authTilUser.error = getString(com.mxvier.auth.R.string.auth_error_empty_user)
-                return@setOnClickListener
-            }
-            if (password.isEmpty()) {
-                binding.authTilPassword.error = getString(com.mxvier.auth.R.string.auth_error_empty_password)
-                return@setOnClickListener
-            }
-
-            viewModel.login(username, password, isRememberMeChecked)
-        }
     }
 
     private fun setupBiometricPrompt() {
@@ -112,8 +89,6 @@ class LoginFragment : Fragment() {
 
         when (canAuthenticate) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
-                // If they previously refused, but now it's success, we should have reset refusal 
-                // but let's check viewmodel state
                 if (!viewModel.isBiometricEnabled.value && !viewModel.isBiometricRefused.value) {
                     showOfferDialog(
                         title = getString(com.mxvier.auth.R.string.auth_biometric_title),
@@ -153,7 +128,7 @@ class LoginFragment : Fragment() {
                 navigateToHome()
             }
             .setNegativeButton("Agora não") { _, _ ->
-                viewModel.enableBiometricOption(false) // This sets refusal
+                viewModel.enableBiometricOption(false)
                 navigateToHome()
             }
             .setCancelable(false)
@@ -177,22 +152,10 @@ class LoginFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { state ->
-                        when (state) {
-                            is LoginUiState.Loading -> toggleLoading(true)
-                            is LoginUiState.Success -> handleBiometricOffer()
-                            is LoginUiState.Error -> {
-                                toggleLoading(false)
-                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                            }
-                            else -> toggleLoading(false)
-                        }
-                    }
-                }
-                launch {
-                    viewModel.savedUser.collect { user ->
-                        if (user != null) {
-                            binding.authEtUser.setText(user)
-                            binding.authSwitchRememberMe.isChecked = true
+                        if (state is LoginUiState.Success) {
+                            handleBiometricOffer()
+                        } else if (state is LoginUiState.Error) {
+                            Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -204,7 +167,6 @@ class LoginFragment : Fragment() {
                     }
                 }
                 launch {
-                    // Check if biometry was registered since last refusal
                     if (viewModel.isBiometricRefused.value && 
                         BiometricManager.from(requireContext()).canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
                         viewModel.resetBiometricRefusal()
