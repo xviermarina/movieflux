@@ -80,6 +80,7 @@ Durante o desenvolvimento, ferramentas de IA foram utilizadas para otimizar:
 *   **Refatoração Modular:** Auxílio na extração de lógica duplicada para o módulo `:data:movies`.
 *   **Criptografia:** Implementação rápida do boilerplate de `EncryptedSharedPreferences`.
 *   **UX de Biometria:** Sugestões de estados para lidar com a recusa e fallback da autenticação biométrica.
+*   **Testes Unitários e de View:** Criação e implementação de cenários de teste.
 
 ---
 
