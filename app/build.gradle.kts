@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.mxvier.movieflux.HiltTestRunner"
     }
 
     buildTypes {
@@ -34,6 +34,20 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
     }
 }
 
@@ -55,7 +69,23 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
 
+    testImplementation(libs.androidx.fragment.ktx)
+    testImplementation("androidx.fragment:fragment-testing:1.8.6")
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    kspTest(libs.hilt.compiler)
+    testImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.androidx.espresso.contrib)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.test.corektx)
+    testImplementation(project(":data:movies"))
+
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.androidx.junit)
 }

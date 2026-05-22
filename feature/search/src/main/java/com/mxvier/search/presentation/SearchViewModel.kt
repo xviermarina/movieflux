@@ -2,11 +2,13 @@ package com.mxvier.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mxvier.core.di.IoDispatcher
 import com.mxvier.search.data.repository.SearchRepository
 import com.mxvier.data.movies.domain.repository.FavoriteRepository
 import com.mxvier.data.movies.domain.model.FavoriteMovie
 import com.mxvier.search.domain.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SearchUiState>(SearchUiState.Idle)
@@ -29,7 +32,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun observeFavorites() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             favoriteRepository.getFavoriteMovies().collectLatest { favs ->
                 favoriteIds = favs.map { it.id }.toSet()
                 
@@ -50,7 +53,7 @@ class SearchViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _uiState.value = SearchUiState.Loading
             try {
                 val results = repository.searchMovies(query, 1)
@@ -71,7 +74,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun toggleFavorite(movie: Movie) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             if (movie.isFavorite) {
                 favoriteRepository.removeFavorite(movie.id)
             } else {

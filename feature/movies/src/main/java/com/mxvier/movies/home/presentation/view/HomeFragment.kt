@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.content.Context
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -127,18 +130,28 @@ class HomeFragment : Fragment() {
                 binding.moviesProgressPaging.isVisible = false
                 binding.moviesRvMovies.isVisible = false
                 binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
+            }
+            is HomeUiState.Empty -> {
+                binding.moviesProgressBar.isVisible = false
+                binding.moviesProgressPaging.isVisible = false
+                binding.moviesRvMovies.isVisible = false
+                binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = true
             }
             is HomeUiState.Success -> {
                 binding.moviesProgressBar.isVisible = false
                 binding.moviesProgressPaging.isVisible = state.isPagingLoading
                 binding.moviesRvMovies.isVisible = true
                 binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
 
                 movieAdapter.submitList(state.movies)
             }
             is HomeUiState.Error -> {
                 binding.moviesProgressBar.isVisible = false
                 binding.moviesProgressPaging.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
 
                 val hasCachedMovies = state.accumulatedMovies.isNotEmpty()
                 binding.moviesRvMovies.isVisible = hasCachedMovies
@@ -154,6 +167,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(movieId: Int) {
+        if (!isInternetAvailable()) {
+            Toast.makeText(requireContext(), getString(R.string.movies_detail_error_loading), Toast.LENGTH_SHORT).show()
+            return
+        }
         val deepLinkUri = "$DEEP_LINK_DETAIL$movieId".toUri()
         try {
             findNavController().navigate(deepLinkUri)
@@ -166,6 +183,15 @@ class HomeFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
     override fun onDestroyView() {

@@ -2,8 +2,10 @@ package com.mxvier.favorites.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mxvier.core.di.IoDispatcher
 import com.mxvier.data.movies.domain.repository.FavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<FavoritesUiState>(FavoritesUiState.Loading)
@@ -24,7 +27,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     private fun observeFavorites() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             favoriteRepository.getFavoriteMovies()
                 .catch { e ->
                     _uiState.value = FavoritesUiState.Error(e.message ?: "Erro desconhecido")
@@ -40,7 +43,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun removeFavorite(movieId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             favoriteRepository.removeFavorite(movieId)
         }
     }
