@@ -127,18 +127,28 @@ class HomeFragment : Fragment() {
                 binding.moviesProgressPaging.isVisible = false
                 binding.moviesRvMovies.isVisible = false
                 binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
+            }
+            is HomeUiState.Empty -> {
+                binding.moviesProgressBar.isVisible = false
+                binding.moviesProgressPaging.isVisible = false
+                binding.moviesRvMovies.isVisible = false
+                binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = true
             }
             is HomeUiState.Success -> {
                 binding.moviesProgressBar.isVisible = false
                 binding.moviesProgressPaging.isVisible = state.isPagingLoading
                 binding.moviesRvMovies.isVisible = true
                 binding.moviesLayoutError.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
 
                 movieAdapter.submitList(state.movies)
             }
             is HomeUiState.Error -> {
                 binding.moviesProgressBar.isVisible = false
                 binding.moviesProgressPaging.isVisible = false
+                binding.moviesLayoutEmpty.isVisible = false
 
                 val hasCachedMovies = state.accumulatedMovies.isNotEmpty()
                 binding.moviesRvMovies.isVisible = hasCachedMovies
