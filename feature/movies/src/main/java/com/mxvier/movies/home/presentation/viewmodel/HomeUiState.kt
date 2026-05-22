@@ -5,6 +5,8 @@ import com.mxvier.movies.home.data.remote.response.MovieResponse
 sealed interface HomeUiState {
     object Loading : HomeUiState
 
+    object Empty : HomeUiState
+
     data class Success(
         val movies: List<MovieResponse>,
         val isPagingLoading: Boolean = false

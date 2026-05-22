@@ -44,8 +44,8 @@ class FavoriteMovieAdapter(
                 onFavoriteClick(movie.id)
             }
 
-            binding.favoritesTvMovieTitleItem.text = movie.title.trim()
-            binding.favoritesTvMovieGenresItem.text = movie.genres ?: ""
+            binding.favoritesTvMovieTitleItem.text = movie.title.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.favorites.R.string.favorites_info_not_available)
+            binding.favoritesTvMovieGenresItem.text = movie.genres?.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.favorites.R.string.favorites_info_not_available)
 
             binding.favoritesIvMoviePosterItem.contentDescription = binding.root.context.getString(com.mxvier.favorites.R.string.favorites_poster_content_description, movie.title)
 

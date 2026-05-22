@@ -88,6 +88,13 @@ class LoginFragment : Fragment() {
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
+                if (errorCode != BiometricPrompt.ERROR_USER_CANCELED && errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(com.mxvier.auth.R.string.auth_biometric_fallback_message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         })
 

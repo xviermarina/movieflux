@@ -94,7 +94,7 @@ class HomeViewModel @Inject constructor(
                 if (newMoviesFromApi.isEmpty()) {
                     isLastPage = true
                     if (currentPage == 1) {
-                        _uiState.value = HomeUiState.Error("Nenhum filme encontrado.")
+                        _uiState.value = HomeUiState.Empty
                     } else {
                         _uiState.value = HomeUiState.Success(
                             movies = accumulatedMovies,

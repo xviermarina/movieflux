@@ -102,4 +102,27 @@
             android:textColor="?attr/colorPrimary" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/movies_layout_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/movies_spacing_large"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movies_toolbar_home">
+
+        <TextView
+            android:id="@+id/movies_tv_empty_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/movies_home_empty_list"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/movies_text_size_body_large" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

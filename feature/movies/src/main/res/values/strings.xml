@@ -4,6 +4,7 @@
     <string name="movies_home_favorites_label">Favoritos</string>
     <string name="movies_home_retry_label">Tentar Novamente</string>
     <string name="movies_home_error_loading">Não foi possível carregar os filmes.</string>
+    <string name="movies_home_empty_list">Nenhum filme encontrado no momento.</string>
 
     <string name="movies_detail_toolbar_label">Detalhes do Filme</string>
     <string name="movies_detail_overview_label">Sinopse</string>
@@ -28,4 +29,5 @@
     <string name="movies_error_navigating_to_details">Erro ao abrir detalhes do filme</string>
     <string name="movies_error_invalid_movie_id">Código do filme inválido</string>
     <string name="movies_error_label">Erro</string>
+    <string name="movies_info_not_available">Informação não disponível</string>
 </resources>
