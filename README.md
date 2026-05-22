@@ -36,7 +36,7 @@ O projeto foi construído utilizando **Clean Architecture** e **Modularização 
 
 ### Estrutura de Módulos:
 *   **`:app`**: Módulo orquestrador. Gerencia a navegação global (DeepLinks) e a composição final do grafo de dependências.
-*   **`:core`**: Módulo agnóstico de infraestrutura. Contém utilitários de rede (Retrofit), segurança (Criptografia) e componentes de UI base.
+*   **`:core`**: Módulo agnóstico de infraestrutura. Contém utilitários de rede (Retrofit) e segurança (Criptografia).
 *   **`:data:movies`**: Módulo de dados compartilhado. Resolve o problema de sincronização entre as features de Filmes e Favoritos. Contém o banco de dados **Room** e os repositórios de persistência.
 *   **`:feature:auth`**: Gerencia o login e a integração com a AndroidX Biometric Library.
 *   **`:feature:movies`**: Responsável pela listagem de filmes populares (com Infinite Scroll) e detalhes do filme.
