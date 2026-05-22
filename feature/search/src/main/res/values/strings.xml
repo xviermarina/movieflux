@@ -9,4 +9,5 @@
     <string name="search_poster_content_description">Poster do filme %1$s</string>
     <string name="search_favorite_star_active_cd">Remover %1$s dos favoritos</string>
     <string name="search_favorite_star_inactive_cd">Adicionar %1$s aos favoritos</string>
+    <string name="search_info_not_available">Informação não disponível</string>
 </resources>

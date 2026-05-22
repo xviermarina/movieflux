@@ -44,8 +44,8 @@ class HomeMovieAdapter(
                 onFavoriteClick(movie)
             }
 
-            binding.moviesTvMovieTitleItem.text = movie.title.trim()
-            binding.moviesTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
+            binding.moviesTvMovieTitleItem.text = movie.title.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.movies.R.string.movies_info_not_available)
+            binding.moviesTvMovieGenresItem.text = movie.genreNames?.joinToString(", ")?.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.movies.R.string.movies_info_not_available)
             
             val (starIcon, starCd) = if (movie.isFavorite) {
                 Pair(android.R.drawable.btn_star_big_on, binding.root.context.getString(com.mxvier.movies.R.string.movies_favorite_star_active_cd, movie.title))

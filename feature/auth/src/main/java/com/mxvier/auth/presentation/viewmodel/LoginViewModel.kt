@@ -2,8 +2,10 @@ package com.mxvier.auth.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mxvier.core.di.IoDispatcher
 import com.mxvier.core.security.SecurityManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val securityManager: SecurityManager
+    private val securityManager: SecurityManager,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Initial)
@@ -38,7 +41,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(username: String, password: String, rememberMe: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _uiState.value = LoginUiState.Loading
             delay(1500)
 
@@ -53,7 +56,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginWithBiometric() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _uiState.value = LoginUiState.Loading
             delay(1000)
             securityManager.saveSessionToken("mock_token")

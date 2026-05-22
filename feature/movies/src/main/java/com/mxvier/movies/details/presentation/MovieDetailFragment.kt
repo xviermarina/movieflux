@@ -126,15 +126,21 @@ class MovieDetailFragment : Fragment() {
             binding.moviesIvMoviePoster.contentDescription = getString(com.mxvier.movies.R.string.movies_poster_content_description, movie.title)
 
             binding.moviesTvDetailToolbarTitle.text = getString(com.mxvier.movies.R.string.movies_detail_toolbar_label)
-            binding.moviesTvMovieTitle.text = movie.title
+            binding.moviesTvMovieTitle.text = movie.title.takeIf { it.isNotEmpty() } ?: getString(com.mxvier.movies.R.string.movies_info_not_available)
             binding.moviesTvVoteAverage.text = String.format("★ %.1f", movie.voteAverage)
-            binding.moviesTvOverview.text = movie.overview
+            binding.moviesTvOverview.text = movie.overview.takeIf { it.isNotEmpty() } ?: getString(com.mxvier.movies.R.string.movies_info_not_available)
 
             movie.genres?.let { genres ->
                 if (genres.isNotEmpty()) {
                     binding.moviesTvMovieGenres.isVisible = true
                     binding.moviesTvMovieGenres.text = genres.joinToString { it.name }
+                } else {
+                    binding.moviesTvMovieGenres.isVisible = true
+                    binding.moviesTvMovieGenres.text = getString(com.mxvier.movies.R.string.movies_info_not_available)
                 }
+            } ?: run {
+                binding.moviesTvMovieGenres.isVisible = true
+                binding.moviesTvMovieGenres.text = getString(com.mxvier.movies.R.string.movies_info_not_available)
             }
 
             val imageUrl = "${Constants.TMDB_IMAGE_BASE_URL}${movie.posterPath}"

@@ -7,4 +7,5 @@
     <string name="favorites_back_cd">Voltar para a tela anterior</string>
     <string name="favorites_poster_content_description">Poster do filme %1$s</string>
     <string name="favorites_favorite_star_active_cd">Remover %1$s dos favoritos</string>
+    <string name="favorites_info_not_available">Informação não disponível</string>
 </resources>

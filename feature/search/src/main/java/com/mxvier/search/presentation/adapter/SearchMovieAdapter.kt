@@ -32,8 +32,8 @@ class SearchMovieAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: Movie) {
-            binding.searchTvMovieTitleItem.text = movie.title
-            binding.searchTvMovieGenresItem.text = movie.genreNames?.joinToString(", ") ?: ""
+            binding.searchTvMovieTitleItem.text = movie.title.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.search.R.string.search_info_not_available)
+            binding.searchTvMovieGenresItem.text = movie.genreNames?.joinToString(", ")?.takeIf { it.isNotBlank() } ?: binding.root.context.getString(com.mxvier.search.R.string.search_info_not_available)
 
             val (starIcon, starCd) = if (movie.isFavorite) {
                 Pair(android.R.drawable.btn_star_big_on, binding.root.context.getString(com.mxvier.search.R.string.search_favorite_star_active_cd, movie.title))
