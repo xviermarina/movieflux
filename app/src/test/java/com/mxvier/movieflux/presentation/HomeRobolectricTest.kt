@@ -1,14 +1,12 @@
 package com.mxvier.movieflux.presentation
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.core.net.toUri
-import androidx.navigation.fragment.NavHostFragment
 import com.mxvier.movieflux.MainActivity
 import com.mxvier.movieflux.robot.homeRobot
+import com.mxvier.movies.home.presentation.view.HomeFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import androidx.test.core.app.launchActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,9 +34,12 @@ class HomeRobolectricTest {
     @Test
     fun homeFlow_ElementsAreDisplayed() {
         composeTestRule.activity.let { activity ->
-            val navHostFragment = activity.supportFragmentManager.findFragmentById(com.mxvier.movieflux.R.id.app_nav_host_fragment) as NavHostFragment
-            navHostFragment.navController.navigate("app://movies/home".toUri())
+            val fragment = HomeFragment()
+            activity.supportFragmentManager.beginTransaction()
+                .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment)
+                .commitNow()
         }
+        ShadowLooper.idleMainLooper()
         
         homeRobot(composeTestRule) {
             waitToolbarTitle()

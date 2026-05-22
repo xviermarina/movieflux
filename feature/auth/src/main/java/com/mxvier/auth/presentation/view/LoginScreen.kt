@@ -48,7 +48,7 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "MovieFlux",
+                    text = stringResource(R.string.auth_login_title),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -57,7 +57,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text(stringResource(R.string.auth_user_hint)) },
+                    label = { Text(stringResource(R.string.auth_login_user_hint)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -65,7 +65,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text(stringResource(R.string.auth_password_hint)) },
+                    label = { Text(stringResource(R.string.auth_login_password_hint)) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
@@ -79,7 +79,7 @@ fun LoginScreen(
                         checked = rememberMe,
                         onCheckedChange = { rememberMe = it }
                     )
-                    Text(text = stringResource(R.string.auth_remember_me_label))
+                    Text(text = stringResource(R.string.auth_login_remember_me_label))
                 }
 
                 Button(
@@ -87,7 +87,7 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Text(text = stringResource(R.string.auth_login_button))
+                    Text(text = stringResource(R.string.auth_login_button_label))
                 }
             }
         }

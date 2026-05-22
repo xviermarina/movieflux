@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
@@ -50,7 +50,7 @@ fun SearchScreen(
                     TextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
-                        placeholder = { Text(stringResource(R.string.search_hint)) },
+                        placeholder = { Text(stringResource(R.string.search_query_hint)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
@@ -72,7 +72,7 @@ fun SearchScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -86,7 +86,7 @@ fun SearchScreen(
             when (val state = uiState) {
                 is SearchUiState.Idle -> {
                     Text(
-                        text = stringResource(R.string.search_idle_message),
+                        text = stringResource(R.string.search_query_hint),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

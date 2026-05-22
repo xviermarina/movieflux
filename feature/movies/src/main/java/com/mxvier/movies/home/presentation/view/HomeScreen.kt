@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +39,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.movies_home_title)) },
+                title = { Text(stringResource(R.string.movies_home_toolbar_label)) },
                 actions = {
                     IconButton(onClick = onSearchClick) {
                         Icon(Icons.Default.Search, contentDescription = stringResource(R.string.movies_search_cd))
@@ -49,7 +48,7 @@ fun HomeScreen(
                         Icon(Icons.Default.Favorite, contentDescription = stringResource(R.string.movies_favorites_list_cd))
                     }
                     IconButton(onClick = onLogoutClick) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = stringResource(R.string.movies_logout_cd))
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(R.string.movies_logout_cd))
                     }
                 }
             )
@@ -66,7 +65,7 @@ fun HomeScreen(
                 }
                 is HomeUiState.Empty -> {
                     Text(
-                        text = stringResource(R.string.movies_error_empty_list),
+                        text = stringResource(R.string.movies_home_empty_list),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -86,7 +85,7 @@ fun HomeScreen(
                     ) {
                         Text(text = state.message, color = MaterialTheme.colorScheme.error)
                         Button(onClick = { viewModel.fetchMovies() }) {
-                            Text(stringResource(R.string.movies_retry_label))
+                            Text(stringResource(R.string.movies_home_retry_label))
                         }
                     }
                 }

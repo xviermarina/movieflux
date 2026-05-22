@@ -1,14 +1,13 @@
 package com.mxvier.movieflux.presentation
 
 import android.os.Bundle
-import androidx.core.net.toUri
-import androidx.navigation.fragment.NavHostFragment
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.mxvier.movieflux.MainActivity
 import com.mxvier.movieflux.robot.movieDetailRobot
+import com.mxvier.movies.details.presentation.MovieDetailFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import androidx.test.core.app.launchActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,8 +21,11 @@ import org.robolectric.shadows.ShadowLooper
 @Config(sdk = [34], application = HiltTestApplication::class)
 class MovieDetailRobolectricTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Before
     fun init() {
@@ -32,17 +34,20 @@ class MovieDetailRobolectricTest {
 
     @Test
     fun movieDetailFlow_ElementsAreDisplayed() {
-        launchActivity<MainActivity>().use { scenario ->
-            scenario.onActivity { activity ->
-                val navHostFragment = activity.supportFragmentManager.findFragmentById(com.mxvier.movieflux.R.id.app_nav_host_fragment) as NavHostFragment
-                navHostFragment.navController.navigate("app://movies/detail/1".toUri())
+        composeTestRule.activity.let { activity ->
+            val fragment = MovieDetailFragment().apply {
+                arguments = Bundle().apply { putInt("movieId", 1) }
             }
-            
-            movieDetailRobot {
-                waitMovieTitle()
-                checkMovieTitleIsVisible()
-                checkOverviewLabelIsVisible()
-            }
+            activity.supportFragmentManager.beginTransaction()
+                .replace(com.mxvier.movieflux.R.id.app_nav_host_fragment, fragment)
+                .commitNow()
+        }
+        ShadowLooper.idleMainLooper()
+        
+        movieDetailRobot(composeTestRule) {
+            waitMovieTitle()
+            checkMovieTitleIsVisible()
+            checkOverviewLabelIsVisible()
         }
     }
 }

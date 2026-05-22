@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
@@ -23,6 +23,7 @@ import com.mxvier.core.util.Constants
 import com.mxvier.movies.R
 import com.mxvier.movies.details.presentation.viewmodel.MovieDetailUiState
 import com.mxvier.movies.details.presentation.viewmodel.MovieDetailViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,7 @@ fun MovieDetailScreen(
                 title = { Text(stringResource(R.string.movies_detail_toolbar_label)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -89,7 +90,7 @@ fun MovieDetailScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 Text(
-                                    text = String.format("★ %.1f", movie.voteAverage),
+                                    text = String.format(Locale.getDefault(), "★ %.1f", movie.voteAverage),
                                     style = MaterialTheme.typography.titleLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -146,7 +147,7 @@ fun MovieDetailScreen(
                     ) {
                         Text(text = state.message, color = MaterialTheme.colorScheme.error)
                         Button(onClick = { viewModel.retryFetch() }) {
-                            Text(stringResource(R.string.movies_retry_label))
+                            Text(stringResource(R.string.movies_detail_retry_label))
                         }
                     }
                 }

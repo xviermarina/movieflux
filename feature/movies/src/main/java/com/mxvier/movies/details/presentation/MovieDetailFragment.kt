@@ -1,34 +1,30 @@
 package com.mxvier.movies.details.presentation
 
-import android.R
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.FileProvider
-import androidx.core.view.isVisible
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.google.android.material.color.MaterialColors
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.mxvier.core.util.Constants
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.mxvier.core.ui.theme.MovieFluxTheme
+import com.mxvier.core.util.Constants
+import com.mxvier.movies.details.presentation.viewmodel.MovieDetailUiState
+import com.mxvier.movies.details.presentation.viewmodel.MovieDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
@@ -73,27 +69,6 @@ class MovieDetailFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), getString(com.mxvier.movies.R.string.movies_error_invalid_movie_id), Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
-        }
-    }
-
-    private fun setupShareButton(movie: MovieDetailResponse) {
-        val toolbar = binding.moviesToolbarDetail
-        toolbar.menu.clear()
-
-        val shareItem = toolbar.menu.add(0, 1, 0, getString(com.mxvier.movies.R.string.movies_detail_share_label))
-        shareItem.setIcon(android.R.drawable.ic_menu_share)
-        shareItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        
-        val iconColor = MaterialColors.getColor(toolbar, com.google.android.material.R.attr.colorOnPrimary)
-        shareItem.iconTintList = ColorStateList.valueOf(iconColor)
-
-        toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == 1) {
-                shareMovie(movie.title, movie.overview, movieId, movie.posterPath)
-                true
-            } else {
-                false
-            }
         }
     }
 
@@ -167,10 +142,5 @@ class MovieDetailFragment : Fragment() {
             e.printStackTrace()
             null
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

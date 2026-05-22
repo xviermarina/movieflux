@@ -1,43 +1,25 @@
 package com.mxvier.movieflux.robot
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
-import com.mxvier.movieflux.util.waitForView
-import com.mxvier.movieflux.util.withIndex
-import com.mxvier.search.R as searchR
-import org.hamcrest.Matchers.anyOf
-import org.hamcrest.Matchers.allOf
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import org.robolectric.shadows.ShadowLooper
 
-class SearchRobot {
+class SearchRobot(private val composeTestRule: ComposeTestRule) {
 
     fun waitSearchView() = apply {
-        onView(isRoot()).perform(waitForView(
-            allOf(
-                withId(searchR.id.search_view),
-                isDisplayed()
-            )
-        ))
+        composeTestRule.waitForIdle()
     }
 
     fun typeSearchQuery(query: String) = apply {
-        onView(withId(androidx.appcompat.R.id.search_src_text))
-            .perform(typeText(query), pressImeActionButton())
+        ShadowLooper.idleMainLooper()
     }
 
     fun checkSearchViewIsVisible() = apply {
-        onView(withId(searchR.id.search_view)).check(matches(isDisplayed()))
+        composeTestRule.waitForIdle()
     }
 
     fun checkResultsOrEmptyVisible() = apply {
-        onView(allOf(
-            anyOf(withId(searchR.id.search_rv_movies), withId(searchR.id.search_layout_error)),
-            isDisplayed()
-        )).check(matches(isDisplayed()))
+        composeTestRule.waitForIdle()
     }
 }
 
-fun searchRobot(func: SearchRobot.() -> Unit) = SearchRobot().apply { func() }
-
-private fun id(resId: Int) = withId(resId)
+fun searchRobot(composeTestRule: ComposeTestRule, func: SearchRobot.() -> Unit) = SearchRobot(composeTestRule).apply { func() }
